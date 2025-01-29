@@ -1,0 +1,40 @@
+package com.example.bankcardbuilder.modules
+
+import android.content.Context
+import androidx.room.Room
+import com.example.bankcardbuilder.dataBase.AccountsDao
+import com.example.bankcardbuilder.dataBase.AppDataBase
+import com.example.bankcardbuilder.dataBase.CardsDao
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object RoomModule {
+
+    @Provides
+    @Singleton
+    fun provideBankCardDB(@ApplicationContext context: Context): AppDataBase {
+        return Room.databaseBuilder(
+            context,
+            AppDataBase::class.java,
+            "local_database"
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAccountsDao(database: AppDataBase): AccountsDao {
+        return database.getAccountsDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCardsDao(database: AppDataBase): CardsDao {
+        return database.getCardsDao()
+    }
+}
