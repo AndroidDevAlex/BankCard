@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.bankcardbuilder.dataBase.tuples.AccountSignInTuple
-import com.example.bankcardbuilder.dataBase.tuples.AccountUserAnswerTuple
 import com.example.bankcardbuilder.dataBase.tuples.AccountUserNameTuple
 import com.example.bankcardbuilder.dataBase.tuples.AccountUserPhoneNumberTuple
 import com.example.bankcardbuilder.dataBase.tuples.AccountUserPhotoTuple
@@ -19,14 +18,8 @@ interface AccountsDao {
     @Query("SELECT id, hash, salt FROM accounts WHERE email = :email")
     suspend fun findByEmail(email: String): AccountSignInTuple?
 
-    @Update(entity = AccountDbEntity::class)
-    suspend fun setUserPhoneNumber(phoneNumber: AccountUserPhoneNumberTuple)
-
     @Query("SELECT id, mobileNumber FROM accounts WHERE email = :email")
     suspend fun getUserPhoneNumberByEmail(email: String): AccountUserPhoneNumberTuple
-
-    @Update(entity = AccountDbEntity::class)
-    suspend fun setUserName(nameUser: AccountUserNameTuple)
 
     @Query("SELECT id, name, surname FROM accounts WHERE email = :email")
     suspend fun getUserNameByEmail(email: String): AccountUserNameTuple
@@ -36,7 +29,4 @@ interface AccountsDao {
 
     @Query("SELECT id, photo FROM accounts WHERE email = :email")
     fun getAccountPhotoByEmail(email: String): Flow<AccountUserPhotoTuple>
-
-    @Update(entity = AccountDbEntity::class)
-    suspend fun setAccountAnswer(answer: AccountUserAnswerTuple)
 }

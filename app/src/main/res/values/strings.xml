@@ -5,7 +5,7 @@
     <string name="this_user_does_not_exist">This user does not exist.</string>
     <string name="there_was_an_error_saving_your_data_please_try_again">There was an error saving your data. Please try again.</string>
     <string name="an_unknown_error_occurred">An unknown error occurred.</string>
-    <string name="field_must_contain_5_digits">Field %1$s must contain 5 digits.</string>
+    <string name="field_must_contain_5_digits">Field must contain 5 digits.</string>
     <string name="set_pin_code">Set Pin Code</string>
     <string name="please_set_your_own">Please set your own</string>
     <string name="pin_code">Pin Code</string>
@@ -16,7 +16,7 @@
     <string name="enter_pin_code_5_digit">Enter Pin Code (5-digit)</string>
     <string name="this_pin_code_does_not_exist_please_try_again">This PIN code does not exist, please try again.</string>
     <string name="the_error_occurred_while_updating_the_data">The error occurred while updating the data.</string>
-    <string name="field_is_empty">Field %1$s is Empty</string>
+    <string name="field_is_empty"> %1$s is empty</string>
     <string name="the_pin_code_is_correct">The Pin Code is correct</string>
     <string name="go">Go</string>
     <string name="delete">Delete</string>
@@ -26,7 +26,7 @@
     <string name="edit_card_number">Edit Card Number</string>
     <string name="edit_card_company">Edit Card Company</string>
     <string name="edit_expiry_date">Edit Expiry Date</string>
-    <string name="a_card_with_this_number_already_exists_for_the_user">A card with this number already exists for the user.</string>
+    <string name="a_card_with_this_number_already_exists_for_the_user">A card with this number already exists.</string>
     <string name="field_must_not_contain">Field %1$s must not contain \"*\"</string>
     <string name="data_saved_successfully">Data saved successfully</string>
     <string name="confirm">Confirm</string>
@@ -39,7 +39,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="there_was_an_error_create_account">There was an error create Account.</string>
-    <string name="invalid_password">Invalid Password</string>
+    <string name="invalid_password">Password must be at least 8 characters long</string>
     <string name="account_already_exists">Account already exists.</string>
     <string name="passwords_do_not_match">Passwords do not match.</string>
     <string name="registration_successful">Registration successful</string>
@@ -65,7 +65,6 @@
     <string name="please_set_up_your_profile">Please set up your profile</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
-    <string name="field_must_start_with_a_capital_letter">Field %1$s must start with a capital letter.</string>
     <string name="security_question">Security Question</string>
     <string name="what_was_your">What was your</string>
     <string name="first_school_s">First School\'s</string>
@@ -74,4 +73,10 @@
     <string name="write_your_answer_here">Write your answer here…</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="last_name_is_Empty">Last Name is Empty</string>
+    <string name="only_first_letter">Only first letter must be capitalized</string>
+    <string name="field_must_start_with_a_capital_letter">Field must start with a capital letter</string>
+    <string name="the_field_must_contain_at_least_10_digits">The field must contain at least 10 digits.</string>
+    <string name="field_is__empty">Field is empty</string>
+    <string name="pin_code_is_empty">Pin code is Empty</string>
 </resources>

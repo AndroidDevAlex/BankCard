@@ -4,7 +4,6 @@ import com.example.bankcardbuilder.data.AccountsRepository
 import com.example.bankcardbuilder.data.AccountsRepositoryImpl
 import com.example.bankcardbuilder.dataBase.AccountsDao
 import com.example.bankcardbuilder.dataBase.CardsDao
-import com.example.bankcardbuilder.navigation.NavigationSettings
 import com.example.bankcardbuilder.security.SecurityUtils
 import com.example.bankcardbuilder.settings.AccountSettings
 import dagger.Module
@@ -22,14 +21,12 @@ object RepositoryModule {
     fun provideAccountsRepository(
         securityUtils: SecurityUtils,
         accountSettings: AccountSettings,
-        navigationSettings: NavigationSettings,
         accountsDao: AccountsDao,
         cardsDao: CardsDao
     ): AccountsRepository {
         return AccountsRepositoryImpl(
             securityUtils,
             accountSettings,
-            navigationSettings,
             accountsDao,
             cardsDao
         )

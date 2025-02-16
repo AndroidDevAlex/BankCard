@@ -9,6 +9,7 @@ enum class Field {
     CARDNUMBER,
     EXPIRYDATE,
     CARDCOMPANY,
+    PHONENUMBER,
     PINCODE;
 
     fun displayName(): String {
@@ -23,6 +24,8 @@ class PasswordMismatchException : AppException()
 class InvalidPasswordException : AppException()
 
 class InvalidFieldFormatException(val field: Field) : AppException()
+
+class InvalidFieldException(val field: Field) : AppException()
 
 class CardNotFoundException : AppException()
 

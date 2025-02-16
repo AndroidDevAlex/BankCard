@@ -23,7 +23,8 @@ object RoomModule {
             context,
             AppDataBase::class.java,
             "local_database"
-        ).build()
+        ).addMigrations(AppDataBase.MIGRATION_1_2, AppDataBase.MIGRATION_2_3)
+            .build()
     }
 
     @Provides

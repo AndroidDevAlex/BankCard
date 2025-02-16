@@ -11,12 +11,13 @@ import androidx.room.PrimaryKey
         Index("email", unique = true)
     ]
 )
+
 data class AccountDbEntity(
     @PrimaryKey(autoGenerate = true) val id: Long,
-    val name: String?,
-    val surname: String?,
-    val mobileNumber: String?,
-    val answer: String?,
+    val name: String,
+    val surname: String,
+    val mobileNumber: String,
+    val answer: String,
     @ColumnInfo(collate = ColumnInfo.NOCASE) val email: String,
     val photo: String?,
     val hash: String,

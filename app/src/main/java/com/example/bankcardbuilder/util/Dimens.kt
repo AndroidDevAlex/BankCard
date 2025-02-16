@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.sp
 object Dimens {
 
     val PaddingTop = 10.dp
+    val Top = 4.dp
     val PaddingRowTop = 30.dp
     val PaddingEnd = 30.dp
     val PaddingStart = 30.dp
@@ -25,8 +26,8 @@ object Dimens {
     val ColumnPadding = 80.dp
     val IconButtonPadding = 8.dp
     val BoxPaddingHorizontal = 12.dp
-    val Padding = 5.dp
-    val PaddingMod = 0.dp
+    val Padding = 26.dp
+    val PaddingBot80 = 80.dp
 
     val Height = 46.dp
     val HeightMod = 120.dp
@@ -65,6 +66,7 @@ object Dimens {
     val SpacerHeight55 = 55.dp
     val SpacerMod = 16.dp
     val SpacerHeight60 = 60.dp
+    val ModHeight = 68.dp
 
     val HorizontalSpacedBy = 40.dp
     val SpacedBy = 15.dp

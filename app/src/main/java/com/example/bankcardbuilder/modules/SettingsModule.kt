@@ -1,7 +1,5 @@
 package com.example.bankcardbuilder.modules
 
-import com.example.bankcardbuilder.navigation.NavigationSettings
-import com.example.bankcardbuilder.navigation.SharedPreferencesNavigation
 import com.example.bankcardbuilder.settings.AccountSettings
 import com.example.bankcardbuilder.settings.SharedPreferencesAccountSettings
 import dagger.Binds
@@ -18,11 +16,6 @@ abstract class SettingsModule {
     @Singleton
     abstract fun bindApplicationSettings(
         applicationSettings: SharedPreferencesAccountSettings
-    ) : AccountSettings
+    ): AccountSettings
 
-    @Binds
-    @Singleton
-    abstract fun bindNavigationSettings(
-        navigationSettings: SharedPreferencesNavigation
-    ) : NavigationSettings
 }

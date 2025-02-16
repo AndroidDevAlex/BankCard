@@ -5,5 +5,6 @@ data class CardInfo(
     val cardNameUser: String,
     val expiryDate: String,
     val cardCompany: String,
-    val cardColor: String
+    val cardColor: String,
+    val pinCode: String
 )

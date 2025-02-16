@@ -32,16 +32,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bankcardbuilder.R
-import com.example.bankcardbuilder.navigation.ScreenState
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
 fun SplashScreen(
     goToLoginScreen: () -> Unit,
-    goToMainProfileScreen: () -> Unit,
-    goToProfileScreen: () -> Unit,
-    goToPhoneNumberScreen: () -> Unit,
-    goToSecurityQuestionScreen: () -> Unit
+    goToMainProfileScreen: () -> Unit
 ) {
 
     val viewModel = hiltViewModel<SplashViewModule>()
@@ -50,10 +46,7 @@ fun SplashScreen(
     SplashScreenUi(
         screenState = screenState,
         goToLoginScreen = { goToLoginScreen() },
-        goToMainProfileScreen = { goToMainProfileScreen() },
-        goToProfileScreen = { goToProfileScreen() },
-        goToPhoneNumberScreen = { goToPhoneNumberScreen() },
-        goToSecurityQuestionScreen = { goToSecurityQuestionScreen() }
+        goToMainProfileScreen = { goToMainProfileScreen() }
     )
 }
 
@@ -61,10 +54,7 @@ fun SplashScreen(
 private fun SplashScreenUi(
     screenState: SplashScreenState,
     goToLoginScreen: () -> Unit,
-    goToMainProfileScreen: () -> Unit,
-    goToProfileScreen: () -> Unit,
-    goToPhoneNumberScreen: () -> Unit,
-    goToSecurityQuestionScreen: () -> Unit
+    goToMainProfileScreen: () -> Unit
 ) {
 
     when (screenState) {
@@ -134,7 +124,10 @@ private fun SplashScreenUi(
                         contentColor = Color.White
                     )
                 ) {
-                    Text(text = stringResource(R.string.get_started), style = MaterialTheme.typography.titleLarge)
+                    Text(
+                        text = stringResource(R.string.get_started),
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
             }
         }
@@ -151,13 +144,7 @@ private fun SplashScreenUi(
 
         is SplashScreenState.SignedIn -> {
             LaunchedEffect(Unit) {
-                when (screenState.screenState) {
-                    is ScreenState.SignUp -> goToProfileScreen()
-                    is ScreenState.Profile -> goToPhoneNumberScreen()
-                    is ScreenState.PhoneNumber -> goToSecurityQuestionScreen()
-                    is ScreenState.SecurityQuestion -> goToMainProfileScreen()
-                    else -> goToMainProfileScreen()
-                }
+                goToMainProfileScreen()
             }
         }
     }

@@ -1,8 +1,12 @@
-package com.example.bankcardbuilder.screens.settingsCard.loginPinCode
+package com.example.bankcardbuilder.screens.settingsCard.cardSettings.uiViews
 
 import android.content.Context
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -10,68 +14,42 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bankcardbuilder.screens.settingsCard.PinCodeCircles
 import com.example.bankcardbuilder.R
-import com.example.bankcardbuilder.exeption.AuthException
-import com.example.bankcardbuilder.exeption.CardNotFoundException
+import com.example.bankcardbuilder.exeption.CardNumberAlreadyExistsException
 import com.example.bankcardbuilder.screens.TopBarCustom
 import com.example.bankcardbuilder.exeption.InvalidFieldFormatException
-import com.example.bankcardbuilder.exeption.InvalidPinCodeException
 import com.example.bankcardbuilder.exeption.StorageException
 import com.example.bankcardbuilder.screens.CustomInfoSnackbar
 import com.example.bankcardbuilder.screens.settingsCard.PinCodeKeyboard
+import com.example.bankcardbuilder.screens.settingsCard.cardSettings.CardSettingsState
+import com.example.bankcardbuilder.screens.settingsCard.cardSettings.CardSettingsUIState
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
-fun LoginPinCodeScreen(
-    goToMainScreen: () -> Unit
-) {
-
-    val viewModel = hiltViewModel<LoginPinCodeViewModel>()
-    val uiState by viewModel.uiState.collectAsState()
-    val context = LocalContext.current
-
-    LoginPinCodeScreenUi(
-        goToMainScreen = { goToMainScreen() },
-        screenState = uiState,
-        onVerifyPinCodeClick = { viewModel.verifyPinCode() },
-        onPinCodeChange = { viewModel.updateScreenState(uiState.copy(pinCode = it)) },
-        context = context
-    )
-}
-
-@Composable
-private fun LoginPinCodeScreenUi(
+ fun SetPinCodeScreenUi(
+    screenState: CardSettingsState,
+    onBackClick: () -> Unit,
+    onNextClick: () -> Unit,
     goToMainScreen: () -> Unit,
-    screenState: LoginPinCodeScreenState,
-    onVerifyPinCodeClick: () -> Unit,
     onPinCodeChange: (String) -> Unit,
     context: Context
 ) {
-
     val snackbar = remember { SnackbarHostState() }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopBarCustom(
-            title = stringResource(R.string.login),
-            onBackClicked = { goToMainScreen() }
+            title = stringResource(R.string.set_pin_code),
+            onBackClicked = { onBackClick() }
         )
         Column(
             modifier = Modifier
@@ -88,12 +66,12 @@ private fun LoginPinCodeScreenUi(
             Spacer(modifier = Modifier.height(Dimens.Height))
 
             Text(
-                text = stringResource(R.string.please_enter_your),
+                text = stringResource(R.string.please_set_your_own),
                 style = MaterialTheme.typography.titleMedium,
                 color = colorResource(id = R.color.gray),
             )
             Text(
-                text = stringResource(R.string.pin_code_login),
+                text = stringResource(R.string.pin_code),
                 style = MaterialTheme.typography.titleMedium,
                 color = colorResource(id = R.color.gray),
             )
@@ -101,7 +79,7 @@ private fun LoginPinCodeScreenUi(
             Spacer(modifier = Modifier.height(Dimens.Height))
 
             Text(
-                text = stringResource(R.string.enter_pin_code_5_digit),
+                text = stringResource(R.string.set_pin_code_5_digit),
                 style = MaterialTheme.typography.bodySmall,
                 color = colorResource(id = R.color.dark_gray),
                 fontWeight = FontWeight.Normal,
@@ -117,6 +95,27 @@ private fun LoginPinCodeScreenUi(
 
             Spacer(modifier = Modifier.weight(1f))
 
+            LaunchedEffect(screenState.uiState) {
+                when (val state = screenState.uiState) {
+                    is CardSettingsUIState.Success -> {
+                        goToMainScreen()
+                    }
+
+                    is CardSettingsUIState.Error -> {
+                        val message = when (val error = state.exception) {
+                            is InvalidFieldFormatException -> context.getString(
+                                R.string.field_must_contain_5_digits
+                            )
+                            is CardNumberAlreadyExistsException -> context.getString(R.string.a_card_with_this_number_already_exists_for_the_user)
+                            is StorageException -> context.getString(R.string.there_was_an_error_saving_your_data_please_try_again)
+                            else -> error.message ?: context.getString(R.string.an_unknown_error_occurred)
+                        }
+
+                        snackbar.showSnackbar(message)
+                    }
+                    else -> Unit
+                }
+            }
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -126,7 +125,7 @@ private fun LoginPinCodeScreenUi(
                 Box(contentAlignment = Alignment.BottomCenter) {
                     Button(
                         onClick = {
-                            onVerifyPinCodeClick()
+                                  onNextClick()
                         },
                         modifier = Modifier
                             .padding(top = Dimens.PaddingTopBut)
@@ -139,34 +138,11 @@ private fun LoginPinCodeScreenUi(
                         )
                     ) {
                         Text(
-                            text = stringResource(R.string.go),
+                            text = stringResource(R.string.set),
                             style = MaterialTheme.typography.titleLarge
                         )
                     }
                     CustomInfoSnackbar(snackbar = snackbar)
-                }
-            }
-
-            LaunchedEffect(screenState.stateUI) {
-                when (val state = screenState.stateUI) {
-                    is LoginPinCodeUIState.Success -> {
-                        goToMainScreen()
-                    }
-
-                    is LoginPinCodeUIState.Error -> {
-                        val message = when (val error = state.exception) {
-                            is InvalidFieldFormatException -> context.getString(R.string.pin_code_is_empty)
-                            is CardNotFoundException -> context.getString(R.string.card_not_found)
-                            is InvalidPinCodeException -> context.getString(R.string.this_pin_code_does_not_exist_please_try_again)
-                            is StorageException -> context.getString(R.string.the_error_occurred_while_updating_the_data)
-                            is AuthException -> context.getString(R.string.this_user_does_not_exist)
-                            else -> error.message
-                                ?: context.getString(R.string.an_unknown_error_occurred)
-                        }
-                        snackbar.showSnackbar(message)
-                    }
-
-                    else -> Unit
                 }
             }
         }

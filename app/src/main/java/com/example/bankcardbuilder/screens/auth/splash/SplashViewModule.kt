@@ -23,10 +23,8 @@ class SplashViewModule @Inject constructor(
     init {
         viewModelScope.launch(ioDispatcher) {
             val isSignedIn = accountsRepository.isSignedIn()
-            val currentScreen = accountsRepository.getCurrentScreenState()
-
             if (isSignedIn) {
-                _screenState.value = SplashScreenState.SignedIn(currentScreen)
+                _screenState.value = SplashScreenState.SignedIn
             } else {
                 _screenState.value = SplashScreenState.NotSignedIn
             }

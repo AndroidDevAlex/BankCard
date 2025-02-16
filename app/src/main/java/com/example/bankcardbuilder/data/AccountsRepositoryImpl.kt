@@ -3,9 +3,6 @@ package com.example.bankcardbuilder.data
 import android.database.sqlite.SQLiteConstraintException
 import android.util.Patterns
 import com.example.bankcardbuilder.dataBase.AccountDbEntity
-import com.example.bankcardbuilder.dataBase.tuples.AccountUserAnswerTuple
-import com.example.bankcardbuilder.dataBase.tuples.AccountUserNameTuple
-import com.example.bankcardbuilder.dataBase.tuples.AccountUserPhoneNumberTuple
 import com.example.bankcardbuilder.dataBase.tuples.AccountUserPhotoTuple
 import com.example.bankcardbuilder.dataBase.AccountsDao
 import com.example.bankcardbuilder.dataBase.CardDbEntity
@@ -24,9 +21,7 @@ import com.example.bankcardbuilder.exeption.wrapSQLiteException
 import com.example.bankcardbuilder.models.CardInfo
 import com.example.bankcardbuilder.models.FullName
 import com.example.bankcardbuilder.models.SignUpData
-import com.example.bankcardbuilder.navigation.NavigationSettings
-import com.example.bankcardbuilder.navigation.ScreenState
-import com.example.bankcardbuilder.screens.settingsAccount.main.ShortCardInfo
+import com.example.bankcardbuilder.screens.mainProfile.ShortCardInfo
 import com.example.bankcardbuilder.security.SecurityUtils
 import com.example.bankcardbuilder.settings.AccountSettings
 import kotlinx.coroutines.flow.Flow
@@ -38,17 +33,11 @@ import javax.inject.Inject
 class AccountsRepositoryImpl @Inject constructor(
     private val securityUtils: SecurityUtils,
     private val accountSettings: AccountSettings,
-    private val navigationSettings: NavigationSettings,
     private val accountsDao: AccountsDao,
     private val cardsDao: CardsDao
 ) : AccountsRepository {
 
-    override suspend fun signUp(signUpData: SignUpData) {
-        signUpData.validate()
-        createAccount(signUpData)
-    }
-
-    private suspend fun createAccount(signUpData: SignUpData) = wrapSQLiteException {
+    override suspend fun createAccount(signUpData: SignUpData) = wrapSQLiteException {
         try {
             val salt = securityUtils.generateSalt()
             val hash = securityUtils.passwordToHash(signUpData.password, salt)
@@ -58,20 +47,19 @@ class AccountsRepositoryImpl @Inject constructor(
             accountsDao.createAccount(
                 AccountDbEntity(
                     id = 0,
-                    name = null,
-                    surname = null,
-                    mobileNumber = null,
+                    name = signUpData.fullName.name,
+                    surname = signUpData.fullName.surname,
+                    mobileNumber = signUpData.mobileNumber,
                     email = signUpData.email,
-                    answer = null,
-                    photo = null,
+                    answer = signUpData.answer,
+                    photo = signUpData.photo,
                     hash = securityUtils.bytesToString(hash),
                     salt = securityUtils.bytesToString(salt),
-                    createdAt = System.currentTimeMillis()
+                    createdAt = signUpData.createdAt
                 )
             )
 
             accountSettings.setCurrentUserEmail(signUpData.email)
-            navigationSettings.saveCurrentScreen(ScreenState.SignUp)
 
         } catch (e: SQLiteConstraintException) {
             throw AccountAlreadyExistsException()
@@ -80,10 +68,6 @@ class AccountsRepositoryImpl @Inject constructor(
 
     override suspend fun isSignedIn(): Boolean {
         return accountSettings.getCurrentUserEmail() != AccountSettings.NO_ACCOUNT_EMAIL
-    }
-
-    override suspend fun getCurrentScreenState(): ScreenState {
-        return navigationSettings.getCurrentScreen()
     }
 
     override suspend fun signIn(email: String, password: CharArray): UserId {
@@ -95,7 +79,6 @@ class AccountsRepositoryImpl @Inject constructor(
         val accountId: Long = findAccountIdByEmailAndPassword(email, password)
 
         accountSettings.setCurrentUserEmail(email)
-        navigationSettings.saveCurrentScreen(ScreenState.LogIn)
         return UserId(accountId)
     }
 
@@ -125,37 +108,9 @@ class AccountsRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun setUserName(fullName: FullName) = wrapSQLiteException {
-        val (name, surname) = fullName
-
-        if (name.isBlank()) throw EmptyFieldException(Field.NAME)
-        if (surname.isBlank()) throw EmptyFieldException(Field.LASTNAME)
-
-        val correctedName = name.capitalizeFirstLetter()
-        val correctedSurname = surname.capitalizeFirstLetter()
-
-        if (name != correctedName) throw InvalidFieldFormatException(Field.NAME)
-        if (surname != correctedSurname) throw InvalidFieldFormatException(Field.LASTNAME)
-
-        val email = accountSettings.getCurrentUserEmail()
-        val account = accountsDao.findByEmail(email) ?: throw AuthException()
-
-        accountsDao.setUserName(AccountUserNameTuple(account.id, name, surname))
-
-        navigationSettings.saveCurrentScreen(ScreenState.Profile)
-    }
-
     override suspend fun setCardData(data: CardInfo) = wrapSQLiteException {
         val email = accountSettings.getCurrentUserEmail()
         val account = accountsDao.findByEmail(email) ?: throw AuthException()
-
-        if (data.cardNameUser.contains('*')) throw InvalidFieldFormatException(Field.NAME)
-
-        if (data.cardNumber.contains('*') || data.cardNumber.length != 16) throw InvalidFieldFormatException(Field.CARDNUMBER)
-
-        if (data.expiryDate.contains('*')|| data.expiryDate.length != 4) throw InvalidFieldFormatException(Field.EXPIRYDATE)
-
-        if (data.cardCompany.contains('*')) throw InvalidFieldFormatException(Field.CARDCOMPANY)
 
         val existingCard = cardsDao.findByAccountIdAndCardNumber(account.id, data.cardNumber)
 
@@ -171,7 +126,7 @@ class AccountsRepositoryImpl @Inject constructor(
             expiryDate = data.expiryDate,
             cardCompany = data.cardCompany,
             color = data.cardColor,
-            pinCode = null,
+            pinCode = data.pinCode,
             isLocked = false
         )
         cardsDao.insertCard(newCard)
@@ -224,20 +179,6 @@ class AccountsRepositoryImpl @Inject constructor(
         return accountSettings.getCurrentUserEmail()
     }
 
-    override suspend fun setPhoneNumber(phoneNumber: String) = wrapSQLiteException {
-        val email = accountSettings.getCurrentUserEmail()
-        val account = accountsDao.findByEmail(email) ?: throw AuthException()
-        accountsDao.setUserPhoneNumber(AccountUserPhoneNumberTuple(account.id, phoneNumber))
-
-        navigationSettings.saveCurrentScreen(ScreenState.PhoneNumber)
-    }
-
-    override suspend fun setPinCode(pinCode: String, cardNumber: String) = wrapSQLiteException {
-        if (!pinCode.matches(Regex("\\d{5}"))) throw InvalidFieldFormatException(Field.PINCODE)
-
-        cardsDao.setPinCodeByCardNumber(cardNumber, pinCode)
-    }
-
     override suspend fun setAccountPhoto(photo: String) = wrapSQLiteException {
         val email = accountSettings.getCurrentUserEmail()
         val account = accountsDao.findByEmail(email) ?: throw AuthException()
@@ -253,18 +194,5 @@ class AccountsRepositoryImpl @Inject constructor(
         return accountsDao.getAccountPhotoByEmail(email).map {
             it.photo ?: ""
         }
-    }
-
-    override suspend fun setAccountAnswer(answer: String) = wrapSQLiteException {
-        if (answer.isBlank()) throw EmptyFieldException(Field.ANSWER)
-        val correctedAnswer = answer.capitalizeFirstLetter()
-
-        if (answer != correctedAnswer) throw InvalidFieldFormatException(Field.ANSWER)
-
-        val email = accountSettings.getCurrentUserEmail()
-        val account = accountsDao.findByEmail(email) ?: throw AuthException()
-        accountsDao.setAccountAnswer(AccountUserAnswerTuple(account.id, answer))
-
-        navigationSettings.saveCurrentScreen(ScreenState.SecurityQuestion)
     }
 }

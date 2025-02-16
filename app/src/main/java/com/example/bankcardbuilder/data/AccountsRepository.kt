@@ -7,8 +7,7 @@ import com.example.bankcardbuilder.exeption.InvalidPinCodeException
 import com.example.bankcardbuilder.models.CardInfo
 import com.example.bankcardbuilder.models.FullName
 import com.example.bankcardbuilder.models.SignUpData
-import com.example.bankcardbuilder.navigation.ScreenState
-import com.example.bankcardbuilder.screens.settingsAccount.main.ShortCardInfo
+import com.example.bankcardbuilder.screens.mainProfile.ShortCardInfo
 import kotlinx.coroutines.flow.Flow
 
 @JvmInline
@@ -18,14 +17,10 @@ interface AccountsRepository {
 
     /**
      * Create a new account.
-     * @throws [EmptyFieldException]
-     * @throws [InvalidEmailException]
-     * @throws [PasswordMismatchException]
      * @throws [AccountAlreadyExistsException]
-     * @throws [InvalidPasswordException]
      * @throws [StorageException]
      */
-    suspend fun signUp(signUpData: SignUpData)
+    suspend fun createAccount(signUpData: SignUpData)
 
     /**
      * Whether user is signed-in or not.
@@ -51,18 +46,8 @@ interface AccountsRepository {
     suspend fun getUserName(): FullName
 
     /**
-     * Set user's name and surname.
-     * @throws [EmptyFieldException]
-     * @throws [InvalidFieldFormatException]
-     * @throws [AuthException]
-     * @throws [StorageException]
-     */
-    suspend fun setUserName(fullName: FullName)
-
-    /**
      * Set user's card data.
      * @throws [CardNumberAlreadyExistsException]
-     * @throws [InvalidFieldFormatException]
      * @throws [AuthException]
      * @throws [StorageException]
      */
@@ -94,20 +79,6 @@ interface AccountsRepository {
     suspend fun getUserEmail(): String
 
     /**
-     * Set user's phone number.
-     * @throws [AuthException]
-     * @throws [StorageException]
-     */
-    suspend fun setPhoneNumber(phoneNumber: String)
-
-    /**
-     * Sets PIN code for the specified card.
-     * @throws [InvalidFieldFormatException]
-     * @throws [StorageException]
-     */
-    suspend fun setPinCode(pinCode: String, cardNumber: String)
-
-    /**
      * Set account photo.
      * @throws [SameDataException]
      * @throws [AuthException]
@@ -121,22 +92,9 @@ interface AccountsRepository {
     fun getAccountPhoto(): Flow<String>
 
     /**
-     * Set the answer to the security question.
-     * @throws [EmptyFieldException]
-     * @throws [AuthException]
-     * @throws [InvalidFieldFormatException]
-     * @throws [StorageException]
-     */
-    suspend fun setAccountAnswer(answer: String)
-
-    /**
      * Get oll cards from DB for the specified account.
      * @throws [AuthException]
      */
     fun getCardsFlow(): Flow<List<ShortCardInfo>>
 
-    /**
-     * Get current screen state.
-     */
-    suspend fun getCurrentScreenState(): ScreenState
 }

@@ -6,7 +6,5 @@ sealed class RouteScreen(val route: String) {
     data object MainProfile : RouteScreen("mainProfile")
     data object CardSettings : RouteScreen("cardSettings")
     data object SignUp : RouteScreen("signUp")
-    data object SecurityQuestion : RouteScreen("securityQuestion")
-    data object Profile : RouteScreen("profile")
-    data object PhoneNumber : RouteScreen("phoneNumber")
+    data object SetPine : RouteScreen("setPine")
 }

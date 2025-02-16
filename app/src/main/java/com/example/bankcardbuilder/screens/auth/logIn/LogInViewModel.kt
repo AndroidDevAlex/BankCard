@@ -28,6 +28,7 @@ class LogInViewModel @Inject constructor(
 
     fun signIn() {
         val currentScreenState = _screenState.value
+
         viewModelScope.launch(ioDispatcher) {
             updateScreenState(currentScreenState.copy(stateUI = LogInUIState.Loading))
             delay(200)
@@ -36,6 +37,7 @@ class LogInViewModel @Inject constructor(
                     email = currentScreenState.email,
                     password = currentScreenState.password.toCharArray()
                 )
+
                 updateScreenState(currentScreenState.copy(stateUI = LogInUIState.Success))
             } catch (e: AppException) {
                 updateScreenState(currentScreenState.copy(stateUI = LogInUIState.Error(e)))

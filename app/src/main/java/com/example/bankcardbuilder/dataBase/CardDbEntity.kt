@@ -10,6 +10,7 @@ import androidx.room.PrimaryKey
         Index("accountId")
     ]
 )
+
 data class CardDbEntity(
     @PrimaryKey(autoGenerate = true) val id: Long,
     val accountId: Long,
@@ -18,6 +19,6 @@ data class CardDbEntity(
     val expiryDate: String,
     val cardCompany: String,
     val color: String,
-    val pinCode: String?,
+    val pinCode: String,
     val isLocked: Boolean
 )

@@ -20,9 +20,6 @@ interface CardsDao {
     @Query("UPDATE cards SET isLocked = :isLocked WHERE id = :cardId")
     suspend fun updateCardLockState(cardId: Long, isLocked: Boolean)
 
-    @Query("UPDATE cards SET pinCode = :pinCode WHERE cardNumber = :cardNumber")
-    suspend fun setPinCodeByCardNumber(cardNumber: String, pinCode: String)
-
     @Query("SELECT COUNT(*) > 0 FROM cards WHERE cardNumber = :cardNumber AND pinCode = :pinCode")
     suspend fun isPinCodeValid(cardNumber: String, pinCode: String): Boolean
 }
