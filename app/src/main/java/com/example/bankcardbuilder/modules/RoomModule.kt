@@ -23,7 +23,11 @@ object RoomModule {
             context,
             AppDataBase::class.java,
             "local_database"
-        ).addMigrations(AppDataBase.MIGRATION_1_2, AppDataBase.MIGRATION_2_3)
+        ).addMigrations(
+            AppDataBase.MIGRATION_1_2,
+            AppDataBase.MIGRATION_2_3,
+            AppDataBase.MIGRATION_3_4
+        )
             .build()
     }
 

@@ -36,13 +36,13 @@ fun PersonalInfo(label: String, value: String?) {
         ) {
             Text(
                 text = "$label ",
-                style = MaterialTheme.typography.bodySmall.copy(fontSize = Dimens.FontSizeRow),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSp),
                 color = Orange
             )
 
             Text(
                 text = value ?: "",
-                style = MaterialTheme.typography.bodySmall.copy(fontSize = Dimens.RowFontSize),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSize13),
                 color = Color.Black
             )
         }

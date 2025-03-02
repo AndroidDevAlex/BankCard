@@ -49,7 +49,7 @@ data class RegistrationState(
 
     fun validateSecurityQuestion() {
         if (answer.isBlank()) throw EmptyFieldException(Field.ANSWER)
-
+        if (answer.all { it.isUpperCase() }) throw InvalidFieldException(Field.ANSWER)
         val correctedAnswer = answer.capitalizeFirstLetter()
         if (answer != correctedAnswer) throw InvalidFieldFormatException(Field.ANSWER)
     }

@@ -17,7 +17,7 @@ data class CardDbEntity(
     val userName: String,
     val cardNumber: String,
     val expiryDate: String,
-    val cardCompany: String,
+    val cardPaySystem: String,
     val color: String,
     val pinCode: String,
     val isLocked: Boolean

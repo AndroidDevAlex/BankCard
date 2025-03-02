@@ -2,32 +2,39 @@ package com.example.bankcardbuilder.screens.settingsCard.cardSettings
 
 import androidx.compose.ui.graphics.Color
 import com.example.bankcardbuilder.exeption.AppException
+import com.example.bankcardbuilder.exeption.EmptyFieldException
 import com.example.bankcardbuilder.exeption.Field
 import com.example.bankcardbuilder.exeption.InvalidFieldFormatException
 import com.example.bankcardbuilder.ui.theme.Orange
 
 data class CardSettingsState(
-    val userName: String = "**** ****",
+    val userName: String = "Your Name",
     val cardNumber: String = "**** **** **** ****",
-    val expiryDate: String = "**/**",
-    val cardCompany: String = "****",
+    val expiryDate: String = "MM/YY",
+    val cardPaySystem: String = "PaySystem",
     val selectedColor: Color = Orange,
     val pinCode: String = "",
     val currentStep: CardSettingsStep = CardSettingsStep.CARD_SETTINGS,
     val uiState: CardSettingsUIState = CardSettingsUIState.Empty
 ) {
     fun validateCardDetails() {
-        if (userName.contains('*')) throw InvalidFieldFormatException(Field.NAME)
+        if (userName == "Your Name") throw InvalidFieldFormatException(Field.NAME)
 
-        if (cardNumber.contains('*') || cardNumber.length != 16) throw InvalidFieldFormatException(
+        if (cardNumber == "**** **** **** ****") throw EmptyFieldException(
+            Field.CARDNUMBER
+        )
+        if (cardNumber.filter { it.isDigit() }.length < 16) throw InvalidFieldFormatException(
             Field.CARDNUMBER
         )
 
-        if (expiryDate.contains('*') || expiryDate.length != 4) throw InvalidFieldFormatException(
+        if (expiryDate == "MM/YY") throw EmptyFieldException(
+            Field.EXPIRYDATE
+        )
+        if (expiryDate.filter { it.isDigit() }.length < 4) throw InvalidFieldFormatException(
             Field.EXPIRYDATE
         )
 
-        if (cardCompany.contains('*')) throw InvalidFieldFormatException(Field.CARDCOMPANY)
+        if (cardPaySystem == "PaySystem") throw EmptyFieldException(Field.CARDPAYSYSTEM)
     }
 
     fun validatePinCode() {

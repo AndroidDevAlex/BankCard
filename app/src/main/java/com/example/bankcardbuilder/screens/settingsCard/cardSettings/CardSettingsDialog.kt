@@ -1,9 +1,15 @@
 package com.example.bankcardbuilder.screens.settingsCard.cardSettings
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -11,30 +17,40 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.screens.settingsCard.cardSettings.InputType.*
-import com.example.bankcardbuilder.ui.theme.ButtonDialog
+import com.example.bankcardbuilder.ui.theme.Gray
+import com.example.bankcardbuilder.ui.theme.Orange
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
 fun CardSettingsDialog(
     title: String,
-    value: String,
     onValueChanged: (String) -> Unit,
     onDismiss: () -> Unit,
     inputType: InputType
 ) {
-    var text by remember { mutableStateOf(value) }
+    var text by remember { mutableStateOf("") }
+
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(title) },
+        title = {
+            Text(
+                title,
+                style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.TextFontSize),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
         text = {
             TextField(
                 value = text,
@@ -46,39 +62,71 @@ fun CardSettingsDialog(
                         else -> it.trimStart('-').replace("[^a-zA-Z0-9 ]".toRegex(), "").take(12)
                     }
                 },
+                textStyle = MaterialTheme.typography.bodyLarge.copy(
+                    fontSize = Dimens.TextFont
+                ),
+                placeholder = {
+                    Text(
+                        when (inputType) {
+                            NUMBER -> "Card Number"
+                            NAME -> "Your Name"
+                            DATE -> "MM/YY"
+                            else -> "Payment System"
+                        },
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = Dimens.TextFontSp,
+                            color = Gray
+                        )
+                    )
+                },
                 visualTransformation = when (inputType) {
                     DATE -> ExpiryDateTransformation()
                     NUMBER -> CardNumberTransformation()
                     else -> VisualTransformation.None
-                },
-                label = { Text(title) }
+                }
             )
+
         },
         confirmButton = {
-            Button(
-                onClick = {
-                    onValueChanged(text)
-                    onDismiss()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = ButtonDialog,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(Dimens.ButCornerShape)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text(stringResource(R.string.confirm))
-            }
-        },
-        dismissButton = {
-            Button(
-                onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = ButtonDialog,
-                    contentColor = Color.White
-                ),
-                shape = RoundedCornerShape(Dimens.ButCornerShape)
-            ) {
-                Text(stringResource(R.string.cancel))
+                Button(
+                    onClick = onDismiss,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Orange,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(Dimens.ButCornerShape),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        stringResource(R.string.cancel),
+                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.TextFont15)
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(Dimens.SpacerWidth10))
+
+                Button(
+                    onClick = {
+                        onValueChanged(text)
+                        onDismiss()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Orange,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(Dimens.ButCornerShape),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        stringResource(R.string.confirm),
+                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.FontSize15)
+                    )
+                }
             }
         }
     )

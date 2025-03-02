@@ -6,8 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,10 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import com.example.bankcardbuilder.R
-import com.example.bankcardbuilder.ui.theme.Aquamarine
-import com.example.bankcardbuilder.ui.theme.Beige
+import com.example.bankcardbuilder.ui.theme.Black
+import com.example.bankcardbuilder.ui.theme.Blue
+import com.example.bankcardbuilder.ui.theme.BrightOrange
+import com.example.bankcardbuilder.ui.theme.DarkBlue
+import com.example.bankcardbuilder.ui.theme.DarkGray
+import com.example.bankcardbuilder.ui.theme.Red
+import com.example.bankcardbuilder.ui.theme.VeryDarkBlue
+import com.example.bankcardbuilder.ui.theme.Violet
+import com.example.bankcardbuilder.ui.theme.White
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -37,53 +45,65 @@ fun CardView(
 ) {
 
     val cardColor = parseColor(cardInfo.color)
+
     val textColor = when (cardColor) {
-        Color.LightGray, Color.Green, Color.Yellow, Color.Cyan, Color.White, Beige, Aquamarine -> Color.Black
-        else -> Color.White
+        Blue, Red, DarkGray, Black, DarkBlue,
+        VeryDarkBlue, Violet, BrightOrange -> White
+
+        else -> Black
     }
 
     Box(
         modifier = Modifier
-            .width(Dimens.BoxSizeWidth)
+            .width(Dimens.BoxSizeWidthDp)
             .height(Dimens.BoxHeight)
             .clip(RoundedCornerShape(Dimens.BoxCornerShape))
             .background(if (isLocked) Color.LightGray else cardColor)
             .border(
-                width = if (cardColor == Color.White && !isLocked) Dimens.BoxBorder else Dimens.BoxBorder0,
-                color = Color.Gray,
+                width = if (cardColor == Color.White && !isLocked) Dimens.Border else Dimens.BoxBorder0,
+                color = if (cardColor == Color.White && !isLocked) Color(0xFF5163BF) else Color.Transparent,
                 shape = RoundedCornerShape(Dimens.BoxCornerShape)
             )
             .padding(Dimens.PaddingBox)
     ) {
+
         if (!isLocked) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = cardInfo.company,
-                    style = MaterialTheme.typography.bodySmall.copy(fontSize = Dimens.TextFont),
-                    color = textColor,
-                    fontWeight = FontWeight.Bold
+                    text = cardInfo.paySystem,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        color = textColor,
+                        fontSize = Dimens.TextFont
+                    )
                 )
                 Spacer(modifier = Modifier.height(Dimens.SpacerHeight8))
-                Text(
-                    text = cardInfo.cardNumber.chunked(4).joinToString(" "),
-                    style = MaterialTheme.typography.bodySmall.copy(fontSize = Dimens.TextFontSp),
-                    color = textColor
-                )
-            }
-            IconButton(
-                onClick = { onLockToggle(cardInfo.cardNumber) },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(Dimens.IconButtonPadding)
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.lock_open),
-                    contentDescription = "Unlock Card",
-                    tint = textColor
-                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "**** **** **** ${cardInfo.cardNumber.takeLast(4)}",
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            color = textColor,
+                            fontSize = Dimens.TextFontSp
+                        )
+                    )
+                    IconButton(
+                        onClick = { onLockToggle(cardInfo.cardNumber) },
+                        modifier = Modifier.padding(start = Dimens.PaddingStartBut)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.lock_open),
+                            contentDescription = "Unlock Card",
+                            tint = textColor
+                        )
+                    }
+                }
             }
         } else {
             Box(

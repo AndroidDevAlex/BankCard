@@ -124,7 +124,7 @@ class AccountsRepositoryImpl @Inject constructor(
             userName = data.cardNameUser,
             cardNumber = data.cardNumber,
             expiryDate = data.expiryDate,
-            cardCompany = data.cardCompany,
+            cardPaySystem = data.cardPaySystem,
             color = data.cardColor,
             pinCode = data.pinCode,
             isLocked = false
@@ -140,7 +140,7 @@ class AccountsRepositoryImpl @Inject constructor(
             cardDbEntities.map { cardUi ->
                 ShortCardInfo(
                     color = cardUi.color,
-                    company = cardUi.cardCompany,
+                    paySystem = cardUi.cardPaySystem,
                     cardNumber = cardUi.cardNumber,
                     isLocked = cardUi.isLocked
                 )

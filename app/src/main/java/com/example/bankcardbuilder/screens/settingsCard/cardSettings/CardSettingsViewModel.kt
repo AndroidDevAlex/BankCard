@@ -78,7 +78,7 @@ class CardSettingsViewModel @Inject constructor(
             cardNameUser = currentState.userName,
             cardNumber = currentState.cardNumber,
             expiryDate = currentState.expiryDate,
-            cardCompany = currentState.cardCompany,
+            cardPaySystem = currentState.cardPaySystem,
             cardColor = Utils.toHex(currentState.selectedColor),
             pinCode = currentState.pinCode
 

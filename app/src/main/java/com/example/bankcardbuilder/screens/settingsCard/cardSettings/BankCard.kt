@@ -1,7 +1,6 @@
 package com.example.bankcardbuilder.screens.settingsCard.cardSettings
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import com.example.bankcardbuilder.util.Dimens
 import com.example.bankcardbuilder.util.Utils
@@ -26,50 +27,81 @@ fun BankCard(
     cardName: String,
     cardNumber: String,
     expiryDate: String,
-    cardCompany: String,
+    cardPaySystem: String,
     textColor: Color,
     onCardNameClick: () -> Unit,
     onCardNumberClick: () -> Unit,
-    onCardCompanyClick: () -> Unit,
-    onExpiryDateClick: () -> Unit
+    onCardPaySystemClick: () -> Unit,
+    onExpiryDateClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
-            .size(Dimens.BoxSizeWidth, Dimens.BoxSizeHeight)
-            .background(color, shape = RoundedCornerShape(Dimens.CornerShape))
-            .border(Dimens.BoxBorder, Color.Black, shape = RoundedCornerShape(Dimens.CornerShape))
+        modifier = modifier
+            .size(Dimens.BoxSize310, Dimens.BoxSize171)
+            .shadow(
+                elevation = if (color == Color.White) Dimens.BoxElevation else Dimens.BoxElevation0,
+                shape = RoundedCornerShape(Dimens.RoundedCornerShape22)
+            )
+            .clip(RoundedCornerShape(Dimens.RoundedCornerShape22))
+            .background(color)
     ) {
-        Column(modifier = Modifier.padding(Dimens.PaddingColumn)) {
+        Column(
+            modifier = Modifier.padding(
+                top = Dimens.ColumnTop,
+                bottom = Dimens.ColumnBottom,
+                start = Dimens.ColumnStart14,
+                end = Dimens.ColumnEnd14
+            )
+        ) {
             Text(
                 text = cardName,
-                style = MaterialTheme.typography.titleMedium.copy(color = textColor),
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    color = textColor,
+                    fontSize = Dimens.TextFont12
+                ),
                 modifier = Modifier
-                    .padding(bottom = Dimens.PaddingTextBottom)
-                    .clickable {
-                        onCardNameClick()
-                    }
+                    .padding(bottom = Dimens.PaddingBottom7)
+                    .clickable { onCardNameClick() }
             )
             Text(
                 text = Utils.formatCardNumber(cardNumber),
-                style = MaterialTheme.typography.bodyMedium.copy(color = textColor),
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    color = textColor,
+                    fontSize = Dimens.TextFont
+                ),
                 modifier = Modifier
                     .padding(bottom = Dimens.PaddingTextBot)
                     .clickable { onCardNumberClick() }
             )
             Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "A Debit Card",
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = textColor,
+                    fontSize = Dimens.TextFont12
+                ),
+                modifier = Modifier.padding(bottom = Dimens.PaddingBottom7)
+            )
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = Utils.formatExpiryDate(expiryDate),
-                    style = MaterialTheme.typography.bodySmall.copy(color = textColor),
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        color = textColor,
+                        fontSize = Dimens.TextFont
+                    ),
                     modifier = Modifier.clickable { onExpiryDateClick() }
                 )
                 Text(
-                    text = cardCompany,
-                    style = MaterialTheme.typography.bodySmall.copy(color = textColor),
-                    modifier = Modifier.clickable { onCardCompanyClick() }
+                    text = cardPaySystem,
+                    style = MaterialTheme.typography.headlineMedium.copy(
+                        color = textColor,
+                        fontSize = Dimens.TextFont12
+                    ),
+                    modifier = Modifier.clickable { onCardPaySystemClick() }
                 )
             }
         }

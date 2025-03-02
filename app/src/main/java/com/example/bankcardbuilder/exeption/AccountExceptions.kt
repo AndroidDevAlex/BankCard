@@ -8,7 +8,7 @@ enum class Field {
     ANSWER,
     CARDNUMBER,
     EXPIRYDATE,
-    CARDCOMPANY,
+    CARDPAYSYSTEM,
     PHONENUMBER,
     PINCODE;
 

@@ -29,9 +29,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bankcardbuilder.R
+import com.example.bankcardbuilder.ui.theme.Gray
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -69,7 +69,7 @@ private fun SplashScreenUi(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = Dimens.PaddingRow),
+                        .padding(top = Dimens.PaddingTopRow),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -82,8 +82,7 @@ private fun SplashScreenUi(
                     Spacer(modifier = Modifier.width(Dimens.SpacerWidth))
                     Text(
                         text = stringResource(R.string.foxbank),
-                        style = MaterialTheme.typography.displayMedium.copy(fontSize = Dimens.FontSizeText),
-                        fontWeight = FontWeight.ExtraBold
+                        style = MaterialTheme.typography.displayLarge.copy(fontSize = Dimens.FontSizeText)
                     )
                 }
 
@@ -96,28 +95,26 @@ private fun SplashScreenUi(
                 ) {
                     Text(
                         text = stringResource(R.string.welcome_to),
-                        style = MaterialTheme.typography.headlineLarge.copy(fontSize = Dimens.FontSizeText),
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.titleLarge.copy(fontSize = Dimens.FontSize53)
                     )
                     Text(
                         text = stringResource(R.string.fox_bank),
-                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.FontSize35),
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.displayLarge.copy(fontSize = Dimens.FontSize35),
                         color = colorResource(id = R.color.orange)
                     )
-                    Spacer(modifier = Modifier.height(Dimens.SpacerHeight12))
+                    Spacer(modifier = Modifier.height(Dimens.SpacerHeight28))
                     Text(
                         text = stringResource(R.string.your_best_money_transfer_partner),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSp),
+                        color = Gray
                     )
                 }
                 Button(
                     onClick = { goToLoginScreen() },
                     modifier = Modifier
-                        .width(Dimens.ButtonWidth)
-                        .padding(bottom = Dimens.PaddingButBottom)
-                        .height(Dimens.ButtonHeight),
+                        .width(Dimens.ButtonWidthDp)
+                        .padding(bottom = Dimens.PaddingBottom110)
+                        .height(Dimens.ButtonHeight55),
                     shape = RoundedCornerShape(Dimens.CornerShape),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = colorResource(id = R.color.orange),
@@ -126,7 +123,7 @@ private fun SplashScreenUi(
                 ) {
                     Text(
                         text = stringResource(R.string.get_started),
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.FontSizeText20)
                     )
                 }
             }

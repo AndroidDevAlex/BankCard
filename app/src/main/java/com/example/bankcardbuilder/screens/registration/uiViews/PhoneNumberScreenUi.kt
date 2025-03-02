@@ -3,38 +3,30 @@ package com.example.bankcardbuilder.screens.registration.uiViews
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.KeyboardType
 import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.exeption.EmptyFieldException
 import com.example.bankcardbuilder.exeption.Field
 import com.example.bankcardbuilder.exeption.InvalidFieldFormatException
+import com.example.bankcardbuilder.screens.CheckIconCircle
+import com.example.bankcardbuilder.screens.CustomTextField
 import com.example.bankcardbuilder.screens.TopBarCustom
-import com.example.bankcardbuilder.screens.registration.PhoneNumberVisualTransformation
 import com.example.bankcardbuilder.screens.registration.RegistrationState
 import com.example.bankcardbuilder.screens.registration.RegistrationUIState
+import com.example.bankcardbuilder.ui.theme.GrayInf
 import com.example.bankcardbuilder.util.Dimens
 
 
@@ -49,7 +41,8 @@ fun PhoneNumberScreenUi(
     Column(modifier = Modifier.fillMaxSize()) {
         TopBarCustom(
             title = stringResource(R.string.phone_number),
-            onBackClicked = { onBackClick() }
+            onBackClicked = { onBackClick() },
+            spacerWidth = Dimens.SpacerWidth30
         )
         Column(
             modifier = Modifier
@@ -61,21 +54,21 @@ fun PhoneNumberScreenUi(
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(Dimens.Height))
+            Spacer(modifier = Modifier.height(Dimens.SpacerHeight25))
 
             Text(
                 text = stringResource(R.string.please_add_your),
-                style = MaterialTheme.typography.titleMedium,
-                color = colorResource(id = R.color.gray),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont),
+                color = GrayInf,
             )
-
+            Spacer(modifier = Modifier.height(Dimens.SpacerHeight5))
             Text(
                 text = stringResource(R.string.mobile_phone_number),
-                style = MaterialTheme.typography.titleMedium,
-                color = colorResource(id = R.color.gray),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont),
+                color = GrayInf,
             )
 
-            Spacer(modifier = Modifier.height(Dimens.SpacerHeight55))
+            Spacer(modifier = Modifier.height(Dimens.SpacerHeight70))
 
 
             val phoneError =
@@ -86,58 +79,28 @@ fun PhoneNumberScreenUi(
                         else null
 
                         is InvalidFieldFormatException -> if (exception.field == Field.PHONENUMBER) {
-                            stringResource(R.string.the_field_must_contain_at_least_10_digits)
+                            stringResource(R.string.entered_fewer_than_10_digits)
                         } else null
 
                         else -> null
                     }
                 }
 
-            TextField(
+            CustomTextField(
                 value = screenState.phoneNumber,
-                onValueChange = { newValue ->
-                    val filteredValue = newValue.filter { it.isDigit() }.take(15)
-                    onPhoneNumberChange(filteredValue)
-                },
-                label = { Text(text = stringResource(R.string.phone_number_)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = Dimens.BoxPaddingVertical),
-                visualTransformation = PhoneNumberVisualTransformation(),
-                singleLine = true,
+                onValueChange = onPhoneNumberChange,
+                label = stringResource(R.string.phone_number_),
                 isError = phoneError != null,
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorResource(id = R.color.blue),
-                    unfocusedBorderColor = Color.Gray,
-                    focusedLabelColor = colorResource(id = R.color.orange),
-                    unfocusedLabelColor = Color.Gray,
-                    cursorColor = colorResource(id = R.color.orange)
-                ),
-                textStyle = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
+                errorMessage = phoneError,
+                isPhoneNumber = true,
                 trailingIcon = {
                     if (screenState.phoneNumber.length in 10..15) {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = "Check Icon",
-                            tint = colorResource(id = R.color.orange),
-                            modifier = Modifier.size(Dimens.IconSizeDp)
-                        )
+                        CheckIconCircle()
                     }
                 }
             )
 
-            phoneError?.let {
-                Text(
-                    text = it,
-                    color = Color.Red,
-                    fontSize = Dimens.TextFontSp,
-                    modifier = Modifier.padding(start = Dimens.PaddingBot, top = Dimens.Top)
-                )
-            }
-            Spacer(modifier = Modifier.height(Dimens.SpacerHeight34))
+            Spacer(modifier = Modifier.height(Dimens.SpacerHeight18))
 
             Button(
                 onClick = { onNextClick() },
@@ -154,7 +117,7 @@ fun PhoneNumberScreenUi(
             ) {
                 Text(
                     text = stringResource(R.string.confirm),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.TextFontSize)
                 )
             }
         }

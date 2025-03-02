@@ -22,21 +22,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import com.example.bankcardbuilder.screens.settingsCard.PinCodeCircles
 import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.exeption.CardNumberAlreadyExistsException
 import com.example.bankcardbuilder.screens.TopBarCustom
 import com.example.bankcardbuilder.exeption.InvalidFieldFormatException
 import com.example.bankcardbuilder.exeption.StorageException
-import com.example.bankcardbuilder.screens.CustomInfoSnackbar
+import com.example.bankcardbuilder.screens.CustomErrorSnackbar
 import com.example.bankcardbuilder.screens.settingsCard.PinCodeKeyboard
 import com.example.bankcardbuilder.screens.settingsCard.cardSettings.CardSettingsState
 import com.example.bankcardbuilder.screens.settingsCard.cardSettings.CardSettingsUIState
+import com.example.bankcardbuilder.ui.theme.Gray
+import com.example.bankcardbuilder.ui.theme.GrayInf
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
- fun SetPinCodeScreenUi(
+fun SetPinCodeScreenUi(
     screenState: CardSettingsState,
     onBackClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -49,7 +50,8 @@ import com.example.bankcardbuilder.util.Dimens
     Column(modifier = Modifier.fillMaxSize()) {
         TopBarCustom(
             title = stringResource(R.string.set_pin_code),
-            onBackClicked = { onBackClick() }
+            onBackClicked = { onBackClick() },
+            spacerWidth = Dimens.SpacerWidth45
         )
         Column(
             modifier = Modifier
@@ -63,26 +65,26 @@ import com.example.bankcardbuilder.util.Dimens
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(Dimens.Height))
+            Spacer(modifier = Modifier.height(Dimens.SpacerHeight42))
+          //  Spacer(modifier = Modifier.height(Dimens.Height))
 
             Text(
                 text = stringResource(R.string.please_set_your_own),
-                style = MaterialTheme.typography.titleMedium,
-                color = colorResource(id = R.color.gray),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont),
+                color = GrayInf,
             )
             Text(
                 text = stringResource(R.string.pin_code),
-                style = MaterialTheme.typography.titleMedium,
-                color = colorResource(id = R.color.gray),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont),
+                color = GrayInf,
             )
 
             Spacer(modifier = Modifier.height(Dimens.Height))
 
             Text(
                 text = stringResource(R.string.set_pin_code_5_digit),
-                style = MaterialTheme.typography.bodySmall,
-                color = colorResource(id = R.color.dark_gray),
-                fontWeight = FontWeight.Normal,
+                style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.TextFontSize13),
+                color = Gray
             )
 
             Spacer(modifier = Modifier.height(Dimens.SpacerHeight))
@@ -104,15 +106,18 @@ import com.example.bankcardbuilder.util.Dimens
                     is CardSettingsUIState.Error -> {
                         val message = when (val error = state.exception) {
                             is InvalidFieldFormatException -> context.getString(
-                                R.string.field_must_contain_5_digits
+                                R.string.pin_code_must_contain_5_digits
                             )
+
                             is CardNumberAlreadyExistsException -> context.getString(R.string.a_card_with_this_number_already_exists_for_the_user)
                             is StorageException -> context.getString(R.string.there_was_an_error_saving_your_data_please_try_again)
-                            else -> error.message ?: context.getString(R.string.an_unknown_error_occurred)
+                            else -> error.message
+                                ?: context.getString(R.string.an_unknown_error_occurred)
                         }
 
                         snackbar.showSnackbar(message)
                     }
+
                     else -> Unit
                 }
             }
@@ -125,7 +130,7 @@ import com.example.bankcardbuilder.util.Dimens
                 Box(contentAlignment = Alignment.BottomCenter) {
                     Button(
                         onClick = {
-                                  onNextClick()
+                            onNextClick()
                         },
                         modifier = Modifier
                             .padding(top = Dimens.PaddingTopBut)
@@ -139,10 +144,10 @@ import com.example.bankcardbuilder.util.Dimens
                     ) {
                         Text(
                             text = stringResource(R.string.set),
-                            style = MaterialTheme.typography.titleLarge
+                            style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.FontSizeText20)
                         )
                     }
-                    CustomInfoSnackbar(snackbar = snackbar)
+                    CustomErrorSnackbar(snackbar = snackbar)
                 }
             }
         }

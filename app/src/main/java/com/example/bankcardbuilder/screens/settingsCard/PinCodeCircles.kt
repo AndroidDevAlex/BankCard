@@ -32,7 +32,7 @@ fun PinCodeCircles(
                         if (isFilled) colorResource(id = R.color.orange) else Color.Transparent,
                     )
                     .border(
-                        Dimens.BoxBorder,
+                        Dimens.Border,
                         if (isFilled) colorResource(id = R.color.orange) else Color.Gray,
                         CircleShape
                     )

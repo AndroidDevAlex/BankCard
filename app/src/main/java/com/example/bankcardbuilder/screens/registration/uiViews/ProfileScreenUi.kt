@@ -9,23 +9,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,16 +32,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import coil.compose.AsyncImage
 import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.exeption.EmptyFieldException
 import com.example.bankcardbuilder.exeption.Field
 import com.example.bankcardbuilder.exeption.InvalidFieldException
 import com.example.bankcardbuilder.exeption.InvalidFieldFormatException
+import com.example.bankcardbuilder.screens.CheckIconCircle
+import com.example.bankcardbuilder.screens.CustomTextField
 import com.example.bankcardbuilder.screens.TopBarCustom
 import com.example.bankcardbuilder.screens.registration.RegistrationState
 import com.example.bankcardbuilder.screens.registration.RegistrationUIState
+import com.example.bankcardbuilder.screens.rememberImeState
+import com.example.bankcardbuilder.ui.theme.GrayInf
 import com.example.bankcardbuilder.util.Dimens
 
 
@@ -61,14 +62,30 @@ fun ProfileScreenUi(
             uri?.let { onPhotoChange(it.toString()) }
         }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    val imeState = rememberImeState()
+    val scrollState = rememberScrollState()
+    val bottomPadding = if (imeState.value) Dimens.Padding16 else Dimens.Padding0
+
+    LaunchedEffect(key1 = imeState.value) {
+        if (imeState.value) {
+            scrollState.animateScrollTo(scrollState.maxValue)
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(bottom = Dimens.PaddingBut)
+    ) {
         TopBarCustom(
             title = stringResource(R.string.profile),
-            onBackClicked = { onBackClick() }
+            onBackClicked = { onBackClick() },
+            spacerWidth = Dimens.SpacerWidth70
         )
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(
                     top = Dimens.PaddingTop,
                     start = Dimens.PaddingStart,
@@ -80,14 +97,13 @@ fun ProfileScreenUi(
 
             Text(
                 text = stringResource(R.string.please_set_up_your_profile),
-                style = MaterialTheme.typography.titleMedium,
-                color = colorResource(id = R.color.gray),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont, color = GrayInf),
             )
 
             Spacer(modifier = Modifier.height(Dimens.SpacerHeightDp))
             Box(
                 modifier = Modifier
-                    .size(Dimens.BoxSizeMod)
+                    .size(Dimens.BoxSize134)
                     .clip(CircleShape)
                     .background(colorResource(id = R.color.orange))
                     .clickable { launcher.launch("image/*") },
@@ -105,132 +121,90 @@ fun ProfileScreenUi(
                         painter = painterResource(id = R.drawable.download),
                         contentDescription = "Download Icon",
                         tint = Color.White,
-                        modifier = Modifier.size(Dimens.IconSizeProf)
+                        modifier = Modifier.size(Dimens.IconSizeDp)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(Dimens.Height))
+            Spacer(modifier = Modifier.height(Dimens.SpacerHeight66))
 
-            val firstNameError = (screenState.uiState as? RegistrationUIState.Error)?.exception?.let { exception ->
-                when (exception) {
-                    is EmptyFieldException -> if (exception.field == Field.NAME) stringResource(
-                        R.string.field_is_empty,
-                        exception.field.displayName()
-                    ) else null
-                    is InvalidFieldFormatException -> if (exception.field == Field.NAME) {
-                        stringResource(R.string.field_must_start_with_a_capital_letter)
-                    } else null
-                    is InvalidFieldException -> if (exception.field == Field.NAME) {
-                        stringResource(R.string.only_first_letter)
-                    } else null
-                    else -> null
+            val firstNameError =
+                (screenState.uiState as? RegistrationUIState.Error)?.exception?.let { exception ->
+                    when (exception) {
+                        is EmptyFieldException -> if (exception.field == Field.NAME) stringResource(
+                            R.string.field_is_empty,
+                            exception.field.displayName()
+                        ) else null
+
+                        is InvalidFieldFormatException -> if (exception.field == Field.NAME) stringResource(
+                            R.string.capital_letter,
+                            exception.field.displayName()
+                        ) else null
+
+                        is InvalidFieldException -> if (exception.field == Field.NAME) {
+                            stringResource(R.string.only_first_letter)
+                        } else null
+
+                        else -> null
+                    }
                 }
-            }
 
-            TextField(
+            val lastNameError =
+                (screenState.uiState as? RegistrationUIState.Error)?.exception?.let { exception ->
+                    when (exception) {
+                        is EmptyFieldException -> if (exception.field == Field.LASTNAME) stringResource(
+                            R.string.last_name_is_Empty
+                        ) else null
+
+                        is InvalidFieldFormatException -> if (exception.field == Field.LASTNAME) {
+                            stringResource(R.string.field_must_start_with_a_capital_letter)
+                        } else null
+
+                        is InvalidFieldException -> if (exception.field == Field.LASTNAME) {
+                            stringResource(R.string.only_first_letter)
+                        } else null
+
+                        else -> null
+                    }
+                }
+
+            CustomTextField(
                 value = screenState.firstName,
                 onValueChange = onNameChange,
-                label = { Text(text = stringResource(R.string.first_name)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = Dimens.BoxPaddingVertical),
-                singleLine = true,
+                label = stringResource(R.string.first_name),
                 isError = firstNameError != null,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorResource(id = R.color.orange),
-                    unfocusedBorderColor = Color.Gray,
-                    focusedLabelColor = colorResource(id = R.color.orange),
-                    unfocusedLabelColor = Color.Gray,
-                    cursorColor = colorResource(id = R.color.orange)
-                ),
-                textStyle = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
+                errorMessage = firstNameError,
                 trailingIcon = {
                     if (screenState.firstName.isNotEmpty()) {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = "Check Icon",
-                            tint = colorResource(id = R.color.orange),
-                            modifier = Modifier.size(Dimens.IconSizeDp)
-                        )
+                        CheckIconCircle()
                     }
                 }
             )
 
-            firstNameError?.let {
-                Text(
-                    text = it,
-                    color = Color.Red,
-                    fontSize = Dimens.TextFontSp,
-                    modifier = Modifier.padding(start = Dimens.PaddingBot, top = Dimens.Top)
-                )
-            }
+            Spacer(modifier = Modifier.height(Dimens.SpacerMod))
 
-            val lastNameError = (screenState.uiState as? RegistrationUIState.Error)?.exception?.let { exception ->
-                when (exception) {
-                    is EmptyFieldException -> if (exception.field == Field.LASTNAME) stringResource(
-                        R.string.last_name_is_Empty
-                    ) else null
-                    is InvalidFieldFormatException -> if (exception.field == Field.LASTNAME) {
-                        stringResource(R.string.field_must_start_with_a_capital_letter)
-                    } else null
-                    is InvalidFieldException -> if (exception.field == Field.LASTNAME) {
-                        stringResource(R.string.only_first_letter)
-                    } else null
-                    else -> null
-                }
-            }
-
-            TextField(
+            CustomTextField(
                 value = screenState.lastName,
                 onValueChange = onSurnameChange,
-                label = { Text(text = stringResource(R.string.last_name)) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = Dimens.BoxPaddingVertical),
-                singleLine = true,
+                label = stringResource(R.string.last_name),
                 isError = lastNameError != null,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = colorResource(id = R.color.orange),
-                    unfocusedBorderColor = Color.Gray,
-                    focusedLabelColor = colorResource(id = R.color.orange),
-                    unfocusedLabelColor = Color.Gray,
-                    cursorColor = colorResource(id = R.color.orange)
-                ),
-                textStyle = TextStyle(
-                    color = MaterialTheme.colorScheme.onSurface
-                ),
+                errorMessage = lastNameError,
                 trailingIcon = {
                     if (screenState.lastName.isNotEmpty()) {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = "Check Icon",
-                            tint = colorResource(id = R.color.orange),
-                            modifier = Modifier.size(Dimens.IconSizeDp)
-                        )
+                        CheckIconCircle()
                     }
                 }
             )
 
-            lastNameError?.let {
-                Text(
-                    text = it,
-                    color = Color.Red,
-                    fontSize = Dimens.TextFontSp,
-                    modifier = Modifier.padding(start = Dimens.PaddingBot, top = Dimens.Top)
-                )
-            }
-
-            Spacer(modifier = Modifier.height(Dimens.SpacerHeight34))
+            Spacer(modifier = Modifier.height(Dimens.SpacerHeight18))
 
             Button(
                 onClick = {
-                    onNextClick() },
+                    onNextClick()
+                },
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = Dimens.PaddingTopBut)
+                    .padding(top = Dimens.PaddingTopBut, bottom = bottomPadding)
                     .width(Dimens.ButWidth)
                     .height(Dimens.ButtonHeight),
                 shape = RoundedCornerShape(Dimens.CornerShape),
@@ -241,7 +215,7 @@ fun ProfileScreenUi(
             ) {
                 Text(
                     text = stringResource(R.string.set),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.TextFontSize)
                 )
             }
         }

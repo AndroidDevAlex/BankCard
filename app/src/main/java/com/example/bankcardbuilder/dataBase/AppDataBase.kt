@@ -6,7 +6,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 @Database(
-    version = 3,
+    version = 4,
     entities = [
         AccountDbEntity::class,
         CardDbEntity::class
@@ -90,6 +90,43 @@ abstract class AppDataBase : RoomDatabase() {
             database.execSQL("ALTER TABLE accounts_new RENAME TO accounts")
 
             database.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_accounts_email` ON `accounts` (`email`)")
+        }
+    }
+
+    /**
+     * Renamed field "cardCompany" to "cardPaySystem" in "cards" table.
+     */
+    object MIGRATION_3_4 : Migration(3, 4) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL(
+                """
+            CREATE TABLE IF NOT EXISTS `cards_new` (
+                `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                `accountId` INTEGER NOT NULL,
+                `userName` TEXT NOT NULL,
+                `cardNumber` TEXT NOT NULL,
+                `expiryDate` TEXT NOT NULL,
+                `cardPaySystem` TEXT NOT NULL, 
+                `color` TEXT NOT NULL,
+                `pinCode` TEXT NOT NULL DEFAULT '',
+                `isLocked` INTEGER NOT NULL DEFAULT 0
+            )
+        """
+            )
+
+            database.execSQL(
+                """
+            INSERT INTO `cards_new` (id, accountId, userName, cardNumber, expiryDate, cardPaySystem, color, pinCode, isLocked)
+            SELECT id, accountId, userName, cardNumber, expiryDate, cardCompany, color, pinCode, isLocked 
+            FROM `cards`
+        """
+            )
+
+            database.execSQL("DROP TABLE cards")
+
+            database.execSQL("ALTER TABLE cards_new RENAME TO cards")
+
+            database.execSQL("CREATE INDEX IF NOT EXISTS `index_cards_accountId` ON `cards` (`accountId`)")
         }
     }
 

@@ -6,7 +6,6 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.bankcardbuilder.util.Utils
 
-
 internal class PhoneNumberVisualTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
         val formattedText = Utils.formatPhoneNumber(text.text)
@@ -16,6 +15,7 @@ internal class PhoneNumberVisualTransformation : VisualTransformation {
         )
     }
 }
+
 private class PhoneNumberOffsetMapping(private val originalText: String) : OffsetMapping {
     override fun originalToTransformed(offset: Int): Int {
         val transformed = Utils.formatPhoneNumber(originalText)

@@ -13,9 +13,12 @@ object Utils {
     }
 
     fun formatExpiryDate(input: String): String {
+        if (input.isBlank()) return "MM/YY"
+
         val sanitized = input.replace(Regex("[^0-9]"), "").take(4)
-        val month = sanitized.take(2).padEnd(2, '*')
-        val year = sanitized.drop(2).padEnd(2, '*')
+        val month = sanitized.take(2).padEnd(2, 'M')
+        val year = sanitized.drop(2).padEnd(2, 'Y')
+
         return "$month/$year"
     }
 

@@ -5,11 +5,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,23 +22,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.painterResource
 import com.example.bankcardbuilder.R
+import com.example.bankcardbuilder.ui.theme.Title
 import com.example.bankcardbuilder.util.Dimens
+
 
 @Composable
 fun PinCodeKeyboard(
     pinCode: String,
     onPinCodeChange: (String) -> Unit
 ) {
-    val digits = (1..9).toList() + listOf(0)
+    val digits = (1..9).toList()
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         horizontalArrangement = Arrangement.spacedBy(Dimens.HorizontalSpacedBy),
         verticalArrangement = Arrangement.spacedBy(Dimens.VerticalSpacedBy),
-        modifier = Modifier.padding(start = Dimens.PaddingStart, end = Dimens.PaddingEnd),
+        modifier = Modifier
+            .padding(start = Dimens.PaddingStart, end = Dimens.PaddingEnd),
         content = {
             items(digits.size) { index ->
                 val number = digits[index]
@@ -42,6 +48,7 @@ fun PinCodeKeyboard(
 
                 Box(
                     modifier = Modifier
+                        .padding(Dimens.BoxPadding)
                         .size(Dimens.BoxSize)
                         .clip(CircleShape)
                         .background(
@@ -49,7 +56,7 @@ fun PinCodeKeyboard(
                             shape = CircleShape
                         )
                         .border(
-                            Dimens.BoxBorder,
+                            Dimens.Border,
                             if (isSelected) colorResource(id = R.color.orange) else Color.Black,
                             CircleShape
                         )
@@ -57,13 +64,62 @@ fun PinCodeKeyboard(
                             if (pinCode.length < 5) {
                                 onPinCodeChange(pinCode + number.toString())
                             }
-                        },
+                        }
+                        .aspectRatio(1f),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = number.toString(),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = if (isSelected) Color.White else Color.Black
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.FontSizeText20),
+                        color = if (isSelected) Color.White else Title
+                    )
+                }
+            }
+        }
+    )
+
+    Spacer(modifier = Modifier.height(Dimens.VerticalSpacedBy))
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        horizontalArrangement = Arrangement.spacedBy(Dimens.HorizontalSpacedBy),
+        verticalArrangement = Arrangement.spacedBy(Dimens.VerticalSpacedBy),
+        modifier = Modifier
+            .padding(start = Dimens.PaddingStart, end = Dimens.PaddingEnd),
+        content = {
+
+            item {
+                Box {}
+            }
+
+            item {
+
+                Box(
+                    modifier = Modifier
+                        .padding(Dimens.BoxPadding)
+                        .size(Dimens.BoxSize)
+                        .clip(CircleShape)
+                        .background(
+                            if (pinCode.contains("0")) colorResource(id = R.color.orange) else Color.White,
+                            shape = CircleShape
+                        )
+                        .border(
+                            Dimens.Border,
+                            if (pinCode.contains("0")) colorResource(id = R.color.orange) else Color.Black,
+                            CircleShape
+                        )
+                        .clickable {
+                            if (pinCode.length < 5) {
+                                onPinCodeChange(pinCode + "0")
+                            }
+                        }
+                        .aspectRatio(1f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "0",
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.FontSizeText20),
+                        color = if (pinCode.contains("0")) Color.White else Title
                     )
                 }
             }
@@ -71,9 +127,6 @@ fun PinCodeKeyboard(
                 Box(
                     modifier = Modifier
                         .size(Dimens.BoxSize)
-                        .clip(CircleShape)
-                        .background(colorResource(id = R.color.red), shape = CircleShape)
-                        .border(Dimens.BoxBorder, Color.Black, CircleShape)
                         .clickable {
                             if (pinCode.isNotEmpty()) {
                                 onPinCodeChange(pinCode.dropLast(1))
@@ -81,13 +134,11 @@ fun PinCodeKeyboard(
                         },
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = stringResource(R.string.delete),
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = Dimens.BoxText
-                        ),
-                        color = Color.Black
+                    Icon(
+                        painter = painterResource(id = R.drawable.backspace),
+                        contentDescription = "BackSpace",
+                        tint = Color.Black,
+                        modifier = Modifier.size(Dimens.IconSize)
                     )
                 }
             }

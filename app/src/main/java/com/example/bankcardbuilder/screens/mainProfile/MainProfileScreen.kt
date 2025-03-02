@@ -40,7 +40,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.em
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.bankcardbuilder.R
@@ -111,7 +111,9 @@ fun MainProfileScreenUi(
         ) {
             TopBarCustom(
                 onMenuClicked = {},
-                onExitClicked = { onClickLogOut() }
+                onExitClicked = { onClickLogOut() },
+                start = Dimens.ColumnStart,
+                end = Dimens.ColumnEnd
             )
 
             Column(
@@ -120,24 +122,26 @@ fun MainProfileScreenUi(
                     .padding(top = Dimens.PaddingTop),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(Dimens.SpacerHeight36))
+                Spacer(modifier = Modifier.height(Dimens.SpacerHeight20))
 
                 Text(
                     text = stringResource(R.string.your_profile_information),
-                    style = MaterialTheme.typography.bodySmall.copy(fontSize = Dimens.TextFontSize),
-                    color = colorResource(id = R.color.gray),
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = Dimens.TextFontSize18,
+                        letterSpacing = 0.003.em
+                    ),
+                    color = colorResource(id = R.color.grayLabel)
                 )
 
-                Spacer(modifier = Modifier.height(Dimens.SpacerHeightDp))
+                Spacer(modifier = Modifier.height(Dimens.SpacerHeight35))
                 Box(
                     contentAlignment = Alignment.Center
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(Dimens.BoxSizeMod)
+                            .size(Dimens.BoxSize150)
                             .clip(CircleShape)
-                            .background(colorResource(id = R.color.yellow))
+                            .background(colorResource(id = R.color.yellow_Box))
                     ) {
                         AsyncImage(
                             model = screenState.userProfile?.photo,
@@ -148,7 +152,7 @@ fun MainProfileScreenUi(
                     }
                     Box(
                         modifier = Modifier
-                            .size(Dimens.BoxSizeDp)
+                            .size(Dimens.BoxSize38)
                             .clip(CircleShape)
                             .background(colorResource(id = R.color.orange))
                             .align(Alignment.BottomEnd)
@@ -160,21 +164,23 @@ fun MainProfileScreenUi(
                             painter = painterResource(id = R.drawable.edit_modify),
                             contentDescription = "Edit Icon",
                             tint = Color.White,
-                            modifier = Modifier.size(Dimens.IconSizeBack)
+                            modifier = Modifier.size(Dimens.IconSize19)
                         )
 
                     }
 
                 }
 
-                Spacer(modifier = Modifier.height(Dimens.Height))
+                Spacer(modifier = Modifier.height(Dimens.SpacerHeight35))
 
-                Column {
+                Column(
+                    modifier = Modifier
+                        .padding(start = Dimens.ColumnPaddingStart, end = Dimens.ColumnPaddingEnd)
+                ) {
                     Text(
                         text = stringResource(R.string.personal_information),
-                        style = MaterialTheme.typography.bodySmall.copy(fontSize = Dimens.TextSize),
-                        color = colorResource(id = R.color.orange),
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.FontSizeText20),
+                        color = colorResource(id = R.color.orange)
                     )
 
                     Spacer(modifier = Modifier.height(Dimens.SpacerHeight20))
@@ -183,29 +189,32 @@ fun MainProfileScreenUi(
                         value = screenState.userProfile?.userName
                     )
 
-                    Spacer(modifier = Modifier.height(Dimens.SpacerHeight12))
+                    Spacer(modifier = Modifier.height(Dimens.SpacerHeight6))
                     PersonalInfo(
                         label = stringResource(R.string.email),
                         value = screenState.userProfile?.email
                     )
 
-                    Spacer(modifier = Modifier.height(Dimens.SpacerHeight12))
+                    Spacer(modifier = Modifier.height(Dimens.SpacerHeight6))
                     PersonalInfo(
                         label = stringResource(R.string.mobile_phone),
                         value = screenState.userProfile?.mobilePhone
                     )
 
-
-                    Spacer(modifier = Modifier.height(Dimens.SpacerHeight60))
+                    Spacer(modifier = Modifier.height(Dimens.SpacerHeight38))
 
                     Text(
                         text = stringResource(R.string.my_cards),
-                        style = MaterialTheme.typography.bodySmall.copy(fontSize = Dimens.TextSize),
-                        color = colorResource(id = R.color.orange),
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.TextFontSize),
+                        color = colorResource(id = R.color.orange)
                     )
 
                     Spacer(modifier = Modifier.height(Dimens.SpacerHeight20))
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(start = Dimens.PaddingStart3, end = Dimens.PaddingEnd3)
+                ) {
 
                     if (screenState.userProfile?.cards.isNullOrEmpty()) {
                         Box(
@@ -237,6 +246,8 @@ fun MainProfileScreenUi(
                             }
                         }
                     }
+
+
                 }
             }
         }

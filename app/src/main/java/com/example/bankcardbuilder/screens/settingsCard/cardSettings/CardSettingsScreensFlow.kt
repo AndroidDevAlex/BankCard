@@ -24,12 +24,11 @@ fun CardSettingsScreensFlow(
                 onUserNameChanged = { viewModel.updateState(screenState.copy(userName = it)) },
                 onCardNumberChanged = { viewModel.updateState(screenState.copy(cardNumber = it)) },
                 onExpiryDateChanged = { viewModel.updateState(screenState.copy(expiryDate = it)) },
-                onCardCompanyChanged = { viewModel.updateState(screenState.copy(cardCompany = it)) },
+                onCardPaySystemChanged = { viewModel.updateState(screenState.copy(cardPaySystem = it)) },
                 onColorSelected = { viewModel.updateState(screenState.copy(selectedColor = it)) },
                 onBackClick = { goToMainScreen() },
                 goToPinCodeScreen = { goToPinCodeScreen() },
-                onNextClick = { viewModel.validation()},
-                context = context
+                onNextClick = { viewModel.validation()}
             )
         }
         CardSettingsStep.PIN_CODE -> {

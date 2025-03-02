@@ -3,6 +3,7 @@ package com.example.bankcardbuilder.screens.auth.logIn
 import android.content.Context
 import android.util.Patterns
 import android.widget.Toast
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,17 +16,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -37,16 +35,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.exeption.AuthException
 import com.example.bankcardbuilder.exeption.EmptyFieldException
 import com.example.bankcardbuilder.exeption.Field
 import com.example.bankcardbuilder.exeption.InvalidEmailException
+import com.example.bankcardbuilder.screens.CheckIconCircle
+import com.example.bankcardbuilder.screens.CustomTextField
+import com.example.bankcardbuilder.screens.rememberImeState
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -58,6 +55,15 @@ fun LogInScreen(
     val screenState by viewModel.screenState.collectAsState()
     val context = LocalContext.current
 
+    val imeState = rememberImeState()
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(key1 = imeState.value){
+        if(imeState.value){
+            scrollState.animateScrollTo(scrollState.maxValue)
+        }
+    }
+
     LogInScreenUi(
         screenState = screenState,
         goToMainScreen = { goToMainScreen() },
@@ -68,7 +74,8 @@ fun LogInScreen(
             viewModel.updateScreenState(screenState.copy(passwordVisible = !screenState.passwordVisible))
         },
         onSignInClick = { viewModel.signIn() },
-        context = context
+        context = context,
+        scrollState = scrollState
     )
 }
 
@@ -81,23 +88,27 @@ private fun LogInScreenUi(
     onPasswordChange: (String) -> Unit,
     onTogglePasswordVisibility: () -> Unit,
     onSignInClick: () -> Unit,
-    context: Context
+    context: Context,
+    scrollState: ScrollState
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(Dimens.PaddingColumn)
+            .verticalScroll(scrollState)
+            .padding(Dimens.ColumnPadding)
             .background(Color.White)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = Dimens.PaddingColumnMod, start = Dimens.PaddingBot)
+                .padding(top = Dimens.PaddingColumnTop)
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.fox_image),
                 contentDescription = "Logo",
-                modifier = Modifier.size(Dimens.IconSizeMod),
+                modifier = Modifier
+                    .size(Dimens.IconSize60)
+                    .padding(start = Dimens.PaddingStartIcon),
                 tint = Color.Unspecified
             )
 
@@ -105,13 +116,12 @@ private fun LogInScreenUi(
 
             Text(
                 text = stringResource(R.string.log_in),
-                style = MaterialTheme.typography.headlineLarge.copy(fontSize = Dimens.FontSize),
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.FontSize48),
                 color = Color.Black
             )
         }
 
-        Spacer(modifier = Modifier.height(Dimens.SpacerHeight))
+        Spacer(modifier = Modifier.height(Dimens.SpacerHeight50))
 
         val generalError =
             (screenState.stateUI as? LogInUIState.Error)?.exception?.let { exception ->
@@ -145,88 +155,38 @@ private fun LogInScreenUi(
                 }
             }
 
-        TextField(
+        CustomTextField(
             value = screenState.email,
-            onValueChange = onEmailChange,
-            label = { Text(text = stringResource(R.string.email_address)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = Dimens.BoxPaddingVertical),
-            singleLine = true,
+            onValueChange = { newValue ->
+                if (newValue.length <= 34) {
+                    onEmailChange(newValue)
+                }
+            },
+            label = stringResource(R.string.email_address),
             isError = emailError != null,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = colorResource(id = R.color.orange),
-                unfocusedBorderColor = Color.Gray,
-                focusedLabelColor = colorResource(id = R.color.orange),
-                unfocusedLabelColor = Color.Gray,
-                cursorColor = colorResource(id = R.color.orange)
-            ),
-            textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+            errorMessage = emailError,
             trailingIcon = {
-                if (Patterns.EMAIL_ADDRESS.matcher(screenState.email)
-                        .matches()
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = "Clear",
-                        tint = colorResource(id = R.color.orange),
-                        modifier = Modifier
-                            .size(Dimens.IconSizeDp)
-                    )
+                if (Patterns.EMAIL_ADDRESS.matcher(screenState.email).matches()) {
+                    Row {
+                        CheckIconCircle()
+                    }
                 }
             }
         )
-        emailError?.let {
-            Text(
-                text = it,
-                color = Color.Red,
-                fontSize = Dimens.TextFontSp,
-                modifier = Modifier.padding(start = Dimens.PaddingBot, top = Dimens.Top)
-            )
-        }
+        Spacer(modifier = Modifier.height(Dimens.SpacerMod))
 
-        TextField(
+        CustomTextField(
             value = screenState.password,
             onValueChange = onPasswordChange,
-            label = { Text(stringResource(R.string.password)) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = Dimens.BoxPaddingVertical),
-            singleLine = true,
-
-            visualTransformation = if (screenState.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            label = stringResource(R.string.password),
             isError = passwordError != null,
-            trailingIcon = {
-                val icon =
-                    if (screenState.passwordVisible) R.drawable.visibility else R.drawable.visibility_off
-                IconButton(onClick = onTogglePasswordVisibility) {
-                    Icon(
-                        painter = painterResource(id = icon),
-                        contentDescription = "Toggle Password Visibility"
-                    )
-                }
-            },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = colorResource(id = R.color.orange),
-                unfocusedBorderColor = Color.Gray,
-                focusedLabelColor = colorResource(id = R.color.orange),
-                unfocusedLabelColor = Color.Gray,
-                cursorColor = colorResource(id = R.color.orange)
-            ),
-            textStyle = TextStyle(
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            errorMessage = passwordError,
+            isPassword = true,
+            isPasswordVisible = screenState.passwordVisible,
+            onTogglePasswordVisibility = onTogglePasswordVisibility
         )
-        passwordError?.let {
-            Text(
-                text = it,
-                color = Color.Red,
-                fontSize = Dimens.TextFontSp,
-                modifier = Modifier.padding(start = Dimens.PaddingBot, top = Dimens.Top)
-            )
-        }
 
-        Spacer(modifier = Modifier.height(Dimens.SpacerMod))
+        Spacer(modifier = Modifier.height(Dimens.SpacerHeight18))
 
         Button(
             onClick = { onSignInClick() },
@@ -243,7 +203,7 @@ private fun LogInScreenUi(
         ) {
             Text(
                 text = stringResource(R.string.log_in),
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.TextFontSize)
             )
         }
 
@@ -261,7 +221,7 @@ private fun LogInScreenUi(
             }
         }
 
-        Spacer(modifier = Modifier.height(Dimens.SpacerModHeight))
+        Spacer(modifier = Modifier.height(Dimens.SpacerHeight25))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -269,6 +229,7 @@ private fun LogInScreenUi(
         ) {
             Text(
                 text = stringResource(R.string.don_t_have_an_account),
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSp),
                 color = Color.Gray,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
@@ -276,8 +237,7 @@ private fun LogInScreenUi(
             Text(
                 text = stringResource(R.string.sign_up),
                 color = colorResource(id = R.color.signUp),
-                style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.TextSize),
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSizeSp),
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .clickable { goToSignUp() }
