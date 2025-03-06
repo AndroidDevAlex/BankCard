@@ -2,29 +2,24 @@ package com.example.bankcardbuilder.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
 
 val Orange = Color(0xFFB16241)
 val LightTurquoise = Color(0xFF8CD9E9)
 val Green = Color(0xFF34A853)
 val Blue = Color(0xFF0166FF)
 val OrangeYellow = Color(0xFFF59D31)
+val LightGrayCard = Color(0xFFCCCCCC)
 
 val BrightOrange = Color(0xFFFC6020)
 val BrightBlue = Color(0xFF009CDE)
 val Red = Color(0xFFE80B26)
 val Yellow = Color(0xFFFBBC05)
+val Beige = Color(0xFFD3D1D0)
 
 val LightGray = Color(0xFF979797)
 val Gray = Color(0xFF878787)
-val GrayInf = Color(0xFFC4C4C4)
-val Title = Color(0xFF1E1E1E)
+val GrayInfo = Color(0xFFDBD3D3)
+val YellowBox = Color(0xFFF49331)
 
 val DarkGray = Color(0xFF1E1E1E)
 val Black = Color(0xFF000000)

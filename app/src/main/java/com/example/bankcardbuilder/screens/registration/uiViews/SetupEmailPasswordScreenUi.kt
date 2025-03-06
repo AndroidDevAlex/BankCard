@@ -2,15 +2,19 @@ package com.example.bankcardbuilder.screens.registration.uiViews
 
 import android.util.Patterns
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -24,7 +28,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.bankcardbuilder.R
@@ -53,6 +56,7 @@ fun SetupEmailPasswordScreenUi(
 
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
+    val logo = if (isSystemInDarkTheme()) R.drawable.fox_image_black else R.drawable.fox_image_white
 
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value) {
@@ -65,7 +69,8 @@ fun SetupEmailPasswordScreenUi(
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(Dimens.ColumnPadding)
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
+            .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
 
         Column(
@@ -74,7 +79,7 @@ fun SetupEmailPasswordScreenUi(
                 .padding(top = Dimens.PaddingColumnTop)
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.fox_image),
+                painter = painterResource(id = logo),
                 contentDescription = "Logo",
                 modifier = Modifier
                     .size(Dimens.IconSize60)
@@ -87,7 +92,7 @@ fun SetupEmailPasswordScreenUi(
             Text(
                 text = stringResource(R.string.sign_up),
                 style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.FontSize48),
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
         Spacer(modifier = Modifier.height(Dimens.SpacerHeight50))
@@ -184,8 +189,8 @@ fun SetupEmailPasswordScreenUi(
                 .height(Dimens.ButtonHeight),
             shape = RoundedCornerShape(Dimens.CornerShape),
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.orange),
-                contentColor = Color.White
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.tertiary
             )
         ) {
             Text(

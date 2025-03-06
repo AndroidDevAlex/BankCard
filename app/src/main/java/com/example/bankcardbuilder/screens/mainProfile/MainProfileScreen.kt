@@ -13,12 +13,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -34,10 +37,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.em
@@ -101,7 +102,9 @@ fun MainProfileScreenUi(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = Dimens.BoxHorizontal)
+            .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
         Column(
             modifier = Modifier
@@ -130,7 +133,7 @@ fun MainProfileScreenUi(
                         fontSize = Dimens.TextFontSize18,
                         letterSpacing = 0.003.em
                     ),
-                    color = colorResource(id = R.color.grayLabel)
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
 
                 Spacer(modifier = Modifier.height(Dimens.SpacerHeight35))
@@ -141,7 +144,9 @@ fun MainProfileScreenUi(
                         modifier = Modifier
                             .size(Dimens.BoxSize150)
                             .clip(CircleShape)
-                            .background(colorResource(id = R.color.yellow_Box))
+                            .background(
+                                MaterialTheme.colorScheme.tertiaryContainer
+                            )
                     ) {
                         AsyncImage(
                             model = screenState.userProfile?.photo,
@@ -154,7 +159,9 @@ fun MainProfileScreenUi(
                         modifier = Modifier
                             .size(Dimens.BoxSize38)
                             .clip(CircleShape)
-                            .background(colorResource(id = R.color.orange))
+                            .background(
+                                MaterialTheme.colorScheme.primary
+                            )
                             .align(Alignment.BottomEnd)
                             .clickable { launcher.launch("image/*") },
                         contentAlignment = Alignment.Center
@@ -163,7 +170,7 @@ fun MainProfileScreenUi(
                         Icon(
                             painter = painterResource(id = R.drawable.edit_modify),
                             contentDescription = "Edit Icon",
-                            tint = Color.White,
+                            tint = MaterialTheme.colorScheme.tertiary,
                             modifier = Modifier.size(Dimens.IconSize19)
                         )
 
@@ -180,7 +187,7 @@ fun MainProfileScreenUi(
                     Text(
                         text = stringResource(R.string.personal_information),
                         style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.FontSizeText20),
-                        color = colorResource(id = R.color.orange)
+                        color = MaterialTheme.colorScheme.primary
                     )
 
                     Spacer(modifier = Modifier.height(Dimens.SpacerHeight20))
@@ -206,7 +213,7 @@ fun MainProfileScreenUi(
                     Text(
                         text = stringResource(R.string.my_cards),
                         style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.TextFontSize),
-                        color = colorResource(id = R.color.orange)
+                        color = MaterialTheme.colorScheme.primary
                     )
 
                     Spacer(modifier = Modifier.height(Dimens.SpacerHeight20))
@@ -294,14 +301,16 @@ private fun AddNewCardBox(onClick: () -> Unit) {
             .width(Dimens.BoxSizeWidthDp)
             .height(Dimens.BoxHeight)
             .clip(RoundedCornerShape(Dimens.BoxCornerShape))
-            .background(Color.Gray)
+            .background(
+                MaterialTheme.colorScheme.onTertiary
+            )
             .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = Icons.Default.Add,
             contentDescription = "Add New Card",
-            tint = Color.White,
+            tint = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.size(Dimens.IconSizeImage)
         )
     }

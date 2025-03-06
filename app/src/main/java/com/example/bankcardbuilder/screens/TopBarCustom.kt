@@ -22,12 +22,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import com.example.bankcardbuilder.R
-import com.example.bankcardbuilder.ui.theme.Title
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -54,7 +50,7 @@ fun TopBarCustom(
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = "Menu",
-                    tint = Color.Black,
+                    tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(Dimens.IconSize)
                 )
             }
@@ -71,7 +67,7 @@ fun TopBarCustom(
                         .width(Dimens.SpacerWidth70)
                         .height(Dimens.SpacerHeight41)
                         .background(
-                            color = colorResource(id = R.color.orange),
+                            color = MaterialTheme.colorScheme.primary,
                             shape = RoundedCornerShape(Dimens.BoxCornerShape)
                         )
                         .padding(Dimens.IconPadding)
@@ -79,7 +75,7 @@ fun TopBarCustom(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "Back",
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.size(Dimens.IconSize21)
                     )
                 }
@@ -90,7 +86,7 @@ fun TopBarCustom(
             title?.let {
                 Text(
                     text = it,
-                    color = Title,
+                    color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.headlineSmall.copy(
                         fontSize = Dimens.TextFontSize
                     ),
@@ -108,7 +104,7 @@ fun TopBarCustom(
                 Icon(
                     imageVector = Icons.Default.ExitToApp,
                     contentDescription = "Exit",
-                    tint = Color.Black,
+                    tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(Dimens.IconSize)
                 )
             }

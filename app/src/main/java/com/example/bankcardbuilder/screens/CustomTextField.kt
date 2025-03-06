@@ -22,17 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.screens.registration.PhoneNumberVisualTransformation
-import com.example.bankcardbuilder.ui.theme.Gray
-import com.example.bankcardbuilder.ui.theme.GrayInf
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -49,21 +45,24 @@ fun CustomTextField(
     isPhoneNumber: Boolean = false
 ) {
     val isFocused = remember { mutableStateOf(false) }
+    val errorColor = MaterialTheme.colorScheme.error
+    val errorContainerColor = MaterialTheme.colorScheme.errorContainer
 
     Column(modifier = Modifier.fillMaxWidth()) {
         val labelColor = when {
-            isError -> Color.Red
-            value.isNotEmpty() -> colorResource(id = R.color.orange)
-            else -> Gray
+            isError -> errorColor
+            value.isNotEmpty() -> MaterialTheme.colorScheme.primary
+            else -> MaterialTheme.colorScheme.surfaceVariant
         }
 
         val underlineColor = when {
-            isError -> Color.Red
-            value.isNotEmpty() -> colorResource(id = R.color.orange)
-            else -> GrayInf
+            isError -> errorContainerColor
+            value.isNotEmpty() -> MaterialTheme.colorScheme.primary
+            else -> MaterialTheme.colorScheme.outline
         }
 
-        val textColor = if (value.isEmpty()) Color.Gray else MaterialTheme.colorScheme.onSurface
+        val textColor = if (value.isEmpty()) MaterialTheme.colorScheme.surfaceVariant
+        else MaterialTheme.colorScheme.onBackground
 
         Text(
             text = label,
@@ -79,7 +78,7 @@ fun CustomTextField(
                 .drawBehind {
                     val strokeWidth = Dimens.Border.toPx()
                     drawLine(
-                        color = underlineColor,
+                        color = if (isError) errorColor else underlineColor,
                         start = Offset(0f, size.height),
                         end = Offset(size.width, size.height),
                         strokeWidth = strokeWidth
@@ -104,7 +103,9 @@ fun CustomTextField(
                         fontSize = Dimens.TextFont15,
                         color = textColor
                     ),
-                    cursorBrush = SolidColor(colorResource(id = R.color.orange)),
+                    cursorBrush = SolidColor(
+                        MaterialTheme.colorScheme.primary
+                    ),
                     visualTransformation = when {
                         isPassword && !isPasswordVisible -> PasswordVisualTransformation()
                         isPhoneNumber -> PhoneNumberVisualTransformation()
@@ -136,7 +137,8 @@ fun CustomTextField(
                             Icon(
                                 painter = painterResource(id = if (isPasswordVisible) R.drawable.visibility else R.drawable.visibility_off),
                                 contentDescription = "Toggle Password Visibility",
-                                tint = if (isPasswordVisible) colorResource(id = R.color.orange) else Gray
+                                tint = if (isPasswordVisible) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.surfaceVariant
                             )
                         }
                     }
@@ -148,7 +150,7 @@ fun CustomTextField(
             Text(
                 text = errorMessage,
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont12),
-                color = Color.Red,
+                color = errorColor,
                 modifier = Modifier.padding(top = Dimens.TexPadding)
             )
         }

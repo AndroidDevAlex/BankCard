@@ -5,11 +5,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -26,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import com.example.bankcardbuilder.R
@@ -92,6 +94,9 @@ fun SecurityQuestionScreenUi(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
+            .background(MaterialTheme.colorScheme.background)
+            .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
         TopBarCustom(
             title = stringResource(R.string.security_question),
@@ -102,7 +107,6 @@ fun SecurityQuestionScreenUi(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
                 .padding(
                     top = Dimens.PaddingTop,
                     start = Dimens.PaddingStart,
@@ -118,7 +122,7 @@ fun SecurityQuestionScreenUi(
                     fontSize = Dimens.TextFont44,
                     lineHeight = Dimens.LineHeight
                 ),
-                color = colorResource(id = R.color.orange),
+                color = MaterialTheme.colorScheme.primary
             )
             Text(
                 text = stringResource(R.string.first_school_s),
@@ -126,7 +130,7 @@ fun SecurityQuestionScreenUi(
                     fontSize = Dimens.TextFont44,
                     lineHeight = Dimens.LineHeight
                 ),
-                color = colorResource(id = R.color.orange),
+                color = MaterialTheme.colorScheme.primary
             )
             Text(
                 text = stringResource(R.string.name),
@@ -134,7 +138,7 @@ fun SecurityQuestionScreenUi(
                     fontSize = Dimens.TextFont44,
                     lineHeight = Dimens.LineHeight
                 ),
-                color = colorResource(id = R.color.orange),
+                color = MaterialTheme.colorScheme.primary
             )
 
             Spacer(modifier = Modifier.height(Dimens.SpacerHeight23))
@@ -145,7 +149,7 @@ fun SecurityQuestionScreenUi(
                     fontSize = Dimens.TextFontSp,
                     lineHeight = Dimens.LineHeight18
                 ),
-                color = colorResource(id = R.color.grayLabel),
+                color = MaterialTheme.colorScheme.surface
             )
 
             Spacer(modifier = Modifier.height(Dimens.SpacerHeight38))
@@ -181,7 +185,7 @@ fun SecurityQuestionScreenUi(
                         .fillMaxWidth()
                         .height(Dimens.HeightMod)
                         .background(
-                            colorResource(id = R.color.beige),
+                            MaterialTheme.colorScheme.onPrimary,
                             shape = RoundedCornerShape(Dimens.RoundedCornerShape10)
                         ),
                     singleLine = false,
@@ -190,23 +194,23 @@ fun SecurityQuestionScreenUi(
                         Text(
                             text = stringResource(R.string.write_your_answer_here),
                             style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont15),
-                            color = colorResource(id = R.color.orange)
+                            color = MaterialTheme.colorScheme.primary
                         )
                     },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
-                        cursorColor = colorResource(id = R.color.orange),
+                        cursorColor = MaterialTheme.colorScheme.primary,
                     ),
                     textStyle = TextStyle(
-                        color = MaterialTheme.colorScheme.onSurface
+                        MaterialTheme.colorScheme.onSecondary
                     )
                 )
             }
             answerError?.let {
                 Text(
                     text = it,
-                    color = Color.Red,
+                    color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont12),
                     modifier = Modifier.padding(
                         start = Dimens.PaddingStart2,
@@ -236,8 +240,8 @@ fun SecurityQuestionScreenUi(
                             .height(Dimens.ButtonHeight),
                         shape = RoundedCornerShape(Dimens.CornerShape),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(id = R.color.orange),
-                            contentColor = Color.White
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.tertiary
                         )
                     ) {
                         Text(

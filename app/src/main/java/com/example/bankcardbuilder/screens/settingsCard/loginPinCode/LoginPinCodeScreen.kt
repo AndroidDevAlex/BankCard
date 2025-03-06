@@ -1,13 +1,17 @@
 package com.example.bankcardbuilder.screens.settingsCard.loginPinCode
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -21,9 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bankcardbuilder.screens.settingsCard.PinCodeCircles
@@ -36,8 +38,6 @@ import com.example.bankcardbuilder.exeption.InvalidPinCodeException
 import com.example.bankcardbuilder.exeption.StorageException
 import com.example.bankcardbuilder.screens.CustomErrorSnackbar
 import com.example.bankcardbuilder.screens.settingsCard.PinCodeKeyboard
-import com.example.bankcardbuilder.ui.theme.Gray
-import com.example.bankcardbuilder.ui.theme.GrayInf
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -69,7 +69,12 @@ private fun LoginPinCodeScreenUi(
 
     val snackbar = remember { SnackbarHostState() }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .windowInsetsPadding(WindowInsets.safeDrawing)
+    ) {
         TopBarCustom(
             title = stringResource(R.string.login),
             onBackClicked = { goToMainScreen() },
@@ -92,12 +97,12 @@ private fun LoginPinCodeScreenUi(
             Text(
                 text = stringResource(R.string.please_enter_your),
                 style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.TextFont),
-                color = GrayInf,
+                color = MaterialTheme.colorScheme.surface
             )
             Text(
                 text = stringResource(R.string.pin_code_login),
                 style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.TextFont),
-                color = GrayInf,
+                color = MaterialTheme.colorScheme.surface
             )
 
             Spacer(modifier = Modifier.height(Dimens.Height))
@@ -105,7 +110,7 @@ private fun LoginPinCodeScreenUi(
             Text(
                 text = stringResource(R.string.enter_pin_code_5_digit),
                 style = MaterialTheme.typography.bodyLarge.copy(fontSize = Dimens.TextFontSize13),
-                color = Gray,
+                color = MaterialTheme.colorScheme.onTertiary
             )
 
             Spacer(modifier = Modifier.height(Dimens.SpacerHeight))
@@ -135,8 +140,8 @@ private fun LoginPinCodeScreenUi(
                             .height(Dimens.HeightBut),
                         shape = RoundedCornerShape(Dimens.CornerShape),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = colorResource(id = R.color.orange),
-                            contentColor = Color.White
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.tertiary
                         )
                     ) {
                         Text(

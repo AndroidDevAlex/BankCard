@@ -20,11 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import com.example.bankcardbuilder.R
-import com.example.bankcardbuilder.ui.theme.Title
 import com.example.bankcardbuilder.util.Dimens
 
 
@@ -33,6 +30,7 @@ fun PinCodeKeyboard(
     pinCode: String,
     onPinCodeChange: (String) -> Unit
 ) {
+
     val digits = (1..9).toList()
 
     LazyVerticalGrid(
@@ -52,12 +50,18 @@ fun PinCodeKeyboard(
                         .size(Dimens.BoxSize)
                         .clip(CircleShape)
                         .background(
-                            if (isSelected) colorResource(id = R.color.orange) else Color.White,
+                            if (isSelected)
+                                MaterialTheme.colorScheme.primary
+                            else
+                                MaterialTheme.colorScheme.tertiary,
                             shape = CircleShape
                         )
                         .border(
                             Dimens.Border,
-                            if (isSelected) colorResource(id = R.color.orange) else Color.Black,
+                            if (isSelected)
+                                MaterialTheme.colorScheme.primary
+                            else
+                                MaterialTheme.colorScheme.onSecondary,
                             CircleShape
                         )
                         .clickable {
@@ -71,7 +75,9 @@ fun PinCodeKeyboard(
                     Text(
                         text = number.toString(),
                         style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.FontSizeText20),
-                        color = if (isSelected) Color.White else Title
+                        color = if (isSelected)
+                            MaterialTheme.colorScheme.tertiary
+                        else MaterialTheme.colorScheme.onSecondary
                     )
                 }
             }
@@ -100,12 +106,18 @@ fun PinCodeKeyboard(
                         .size(Dimens.BoxSize)
                         .clip(CircleShape)
                         .background(
-                            if (pinCode.contains("0")) colorResource(id = R.color.orange) else Color.White,
+                            if (pinCode.contains("0"))
+                                MaterialTheme.colorScheme.primary
+                            else
+                                MaterialTheme.colorScheme.tertiary,
+
                             shape = CircleShape
                         )
                         .border(
                             Dimens.Border,
-                            if (pinCode.contains("0")) colorResource(id = R.color.orange) else Color.Black,
+                            if (pinCode.contains("0"))
+                                MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.onSecondary,
                             CircleShape
                         )
                         .clickable {
@@ -119,7 +131,10 @@ fun PinCodeKeyboard(
                     Text(
                         text = "0",
                         style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.FontSizeText20),
-                        color = if (pinCode.contains("0")) Color.White else Title
+                        color = if (pinCode.contains("0"))
+                            MaterialTheme.colorScheme.tertiary
+                        else MaterialTheme.colorScheme.onSecondary
+
                     )
                 }
             }
@@ -137,7 +152,7 @@ fun PinCodeKeyboard(
                     Icon(
                         painter = painterResource(id = R.drawable.backspace),
                         contentDescription = "BackSpace",
-                        tint = Color.Black,
+                        tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(Dimens.IconSize)
                     )
                 }

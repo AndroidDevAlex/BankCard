@@ -6,29 +6,30 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.screens.settingsCard.cardSettings.InputType.*
-import com.example.bankcardbuilder.ui.theme.Gray
-import com.example.bankcardbuilder.ui.theme.Orange
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -40,13 +41,29 @@ fun CardSettingsDialog(
 ) {
     var text by remember { mutableStateOf("") }
 
+    val keyboardOptions = when (inputType) {
+        DATE -> KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        )
+        NUMBER -> KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        )
+        else -> KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done
+        )
+    }
 
     AlertDialog(
         onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.onPrimary,
         title = {
             Text(
                 title,
                 style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.TextFontSize),
+                color = MaterialTheme.colorScheme.onSecondary,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )
@@ -63,7 +80,8 @@ fun CardSettingsDialog(
                     }
                 },
                 textStyle = MaterialTheme.typography.bodyLarge.copy(
-                    fontSize = Dimens.TextFont
+                    fontSize = Dimens.TextFont,
+                    color = MaterialTheme.colorScheme.onSecondary
                 ),
                 placeholder = {
                     Text(
@@ -75,7 +93,7 @@ fun CardSettingsDialog(
                         },
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontSize = Dimens.TextFontSp,
-                            color = Gray
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     )
                 },
@@ -83,7 +101,12 @@ fun CardSettingsDialog(
                     DATE -> ExpiryDateTransformation()
                     NUMBER -> CardNumberTransformation()
                     else -> VisualTransformation.None
-                }
+                },
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface
+                ),
+                keyboardOptions = keyboardOptions
             )
 
         },
@@ -96,8 +119,8 @@ fun CardSettingsDialog(
                 Button(
                     onClick = onDismiss,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Orange,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.tertiary
                     ),
                     shape = RoundedCornerShape(Dimens.ButCornerShape),
                     modifier = Modifier.weight(1f)
@@ -116,8 +139,8 @@ fun CardSettingsDialog(
                         onDismiss()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Orange,
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.tertiary
                     ),
                     shape = RoundedCornerShape(Dimens.ButCornerShape),
                     modifier = Modifier.weight(1f)

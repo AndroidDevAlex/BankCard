@@ -1,17 +1,21 @@
 package com.example.bankcardbuilder.screens.auth.splash
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.Button
@@ -26,12 +30,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.bankcardbuilder.R
-import com.example.bankcardbuilder.ui.theme.Gray
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -57,13 +59,16 @@ private fun SplashScreenUi(
     goToMainProfileScreen: () -> Unit
 ) {
 
+    val logo = if (isSystemInDarkTheme()) R.drawable.fox_image_black else R.drawable.fox_image_white
+
     when (screenState) {
         SplashScreenState.NotSignedIn -> {
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.White),
+                    .background(MaterialTheme.colorScheme.background)
+                    .windowInsetsPadding(WindowInsets.safeDrawing),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
@@ -73,8 +78,9 @@ private fun SplashScreenUi(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
+
                     Icon(
-                        painter = painterResource(id = R.drawable.fox_image),
+                        painter = painterResource(id = logo),
                         contentDescription = "FoxBank Logo",
                         modifier = Modifier.size(Dimens.IconSizeMod),
                         tint = Color.Unspecified
@@ -82,7 +88,8 @@ private fun SplashScreenUi(
                     Spacer(modifier = Modifier.width(Dimens.SpacerWidth))
                     Text(
                         text = stringResource(R.string.foxbank),
-                        style = MaterialTheme.typography.displayLarge.copy(fontSize = Dimens.FontSizeText)
+                        style = MaterialTheme.typography.displayLarge.copy(fontSize = Dimens.FontSizeText),
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
 
@@ -95,18 +102,19 @@ private fun SplashScreenUi(
                 ) {
                     Text(
                         text = stringResource(R.string.welcome_to),
-                        style = MaterialTheme.typography.titleLarge.copy(fontSize = Dimens.FontSize53)
+                        style = MaterialTheme.typography.titleLarge.copy(fontSize = Dimens.FontSize53),
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                     Text(
                         text = stringResource(R.string.fox_bank),
                         style = MaterialTheme.typography.displayLarge.copy(fontSize = Dimens.FontSize35),
-                        color = colorResource(id = R.color.orange)
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.height(Dimens.SpacerHeight28))
                     Text(
                         text = stringResource(R.string.your_best_money_transfer_partner),
                         style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSp),
-                        color = Gray
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 Button(
@@ -117,8 +125,8 @@ private fun SplashScreenUi(
                         .height(Dimens.ButtonHeight55),
                     shape = RoundedCornerShape(Dimens.CornerShape),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(id = R.color.orange),
-                        contentColor = Color.White
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.tertiary
                     )
                 ) {
                     Text(
@@ -132,10 +140,13 @@ private fun SplashScreenUi(
         is SplashScreenState.Loading -> {
             Box(
                 modifier = Modifier
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator(color = colorResource(id = R.color.black))
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.onBackground
+                )
             }
         }
 

@@ -1,11 +1,15 @@
 package com.example.bankcardbuilder.screens.registration.uiViews
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -14,8 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.exeption.EmptyFieldException
@@ -26,7 +28,6 @@ import com.example.bankcardbuilder.screens.CustomTextField
 import com.example.bankcardbuilder.screens.TopBarCustom
 import com.example.bankcardbuilder.screens.registration.RegistrationState
 import com.example.bankcardbuilder.screens.registration.RegistrationUIState
-import com.example.bankcardbuilder.ui.theme.GrayInf
 import com.example.bankcardbuilder.util.Dimens
 
 
@@ -38,7 +39,12 @@ fun PhoneNumberScreenUi(
     onNextClick: () -> Unit
 ) {
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .windowInsetsPadding(WindowInsets.safeDrawing)
+    ) {
         TopBarCustom(
             title = stringResource(R.string.phone_number),
             onBackClicked = { onBackClick() },
@@ -59,13 +65,13 @@ fun PhoneNumberScreenUi(
             Text(
                 text = stringResource(R.string.please_add_your),
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont),
-                color = GrayInf,
+                color = MaterialTheme.colorScheme.surface
             )
             Spacer(modifier = Modifier.height(Dimens.SpacerHeight5))
             Text(
                 text = stringResource(R.string.mobile_phone_number),
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont),
-                color = GrayInf,
+                color = MaterialTheme.colorScheme.surface
             )
 
             Spacer(modifier = Modifier.height(Dimens.SpacerHeight70))
@@ -111,8 +117,8 @@ fun PhoneNumberScreenUi(
                     .height(Dimens.ButtonHeight),
                 shape = RoundedCornerShape(Dimens.CornerShape),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.orange),
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.tertiary
                 )
             ) {
                 Text(

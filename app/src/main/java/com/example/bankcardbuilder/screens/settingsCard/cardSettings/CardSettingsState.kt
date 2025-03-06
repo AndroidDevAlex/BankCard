@@ -5,14 +5,14 @@ import com.example.bankcardbuilder.exeption.AppException
 import com.example.bankcardbuilder.exeption.EmptyFieldException
 import com.example.bankcardbuilder.exeption.Field
 import com.example.bankcardbuilder.exeption.InvalidFieldFormatException
-import com.example.bankcardbuilder.ui.theme.Orange
+import com.example.bankcardbuilder.ui.theme.BrightOrange
 
 data class CardSettingsState(
     val userName: String = "Your Name",
     val cardNumber: String = "**** **** **** ****",
     val expiryDate: String = "MM/YY",
     val cardPaySystem: String = "PaySystem",
-    val selectedColor: Color = Orange,
+    val selectedColor: Color = BrightOrange,
     val pinCode: String = "",
     val currentStep: CardSettingsStep = CardSettingsStep.CARD_SETTINGS,
     val uiState: CardSettingsUIState = CardSettingsUIState.Empty

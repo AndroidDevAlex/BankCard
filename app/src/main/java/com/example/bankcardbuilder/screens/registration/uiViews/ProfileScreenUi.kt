@@ -8,11 +8,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -27,9 +30,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil.compose.AsyncImage
@@ -44,7 +45,6 @@ import com.example.bankcardbuilder.screens.TopBarCustom
 import com.example.bankcardbuilder.screens.registration.RegistrationState
 import com.example.bankcardbuilder.screens.registration.RegistrationUIState
 import com.example.bankcardbuilder.screens.rememberImeState
-import com.example.bankcardbuilder.ui.theme.GrayInf
 import com.example.bankcardbuilder.util.Dimens
 
 
@@ -75,6 +75,9 @@ fun ProfileScreenUi(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
+            .background(MaterialTheme.colorScheme.background)
+            .windowInsetsPadding(WindowInsets.safeDrawing)
             .padding(bottom = Dimens.PaddingBut)
     ) {
         TopBarCustom(
@@ -85,7 +88,6 @@ fun ProfileScreenUi(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(scrollState)
                 .padding(
                     top = Dimens.PaddingTop,
                     start = Dimens.PaddingStart,
@@ -97,7 +99,10 @@ fun ProfileScreenUi(
 
             Text(
                 text = stringResource(R.string.please_set_up_your_profile),
-                style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFont, color = GrayInf),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontSize = Dimens.TextFont,
+                    color = MaterialTheme.colorScheme.surface
+                ),
             )
 
             Spacer(modifier = Modifier.height(Dimens.SpacerHeightDp))
@@ -105,7 +110,9 @@ fun ProfileScreenUi(
                 modifier = Modifier
                     .size(Dimens.BoxSize134)
                     .clip(CircleShape)
-                    .background(colorResource(id = R.color.orange))
+                    .background(
+                        MaterialTheme.colorScheme.primary
+                    )
                     .clickable { launcher.launch("image/*") },
                 contentAlignment = Alignment.Center
             ) {
@@ -120,7 +127,7 @@ fun ProfileScreenUi(
                     Icon(
                         painter = painterResource(id = R.drawable.download),
                         contentDescription = "Download Icon",
-                        tint = Color.White,
+                        tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.size(Dimens.IconSizeDp)
                     )
                 }
@@ -209,8 +216,8 @@ fun ProfileScreenUi(
                     .height(Dimens.ButtonHeight),
                 shape = RoundedCornerShape(Dimens.CornerShape),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = colorResource(id = R.color.orange),
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.tertiary
                 )
             ) {
                 Text(

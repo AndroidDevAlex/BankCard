@@ -3,6 +3,7 @@ package com.example.bankcardbuilder.screens.mainProfile
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,6 +46,7 @@ fun CardView(
 ) {
 
     val cardColor = parseColor(cardInfo.color)
+    val isDarkTheme = isSystemInDarkTheme()
 
     val textColor = when (cardColor) {
         Blue, Red, DarkGray, Black, DarkBlue,
@@ -53,15 +55,26 @@ fun CardView(
         else -> Black
     }
 
+    val borderColor = when {
+        isDarkTheme && cardColor in listOf(DarkGray, Black, VeryDarkBlue) -> Color.White
+        !isDarkTheme && cardColor == Color.White && !isLocked -> Color(0xFF5163BF)
+        else -> Color.Transparent
+    }
+
+
     Box(
         modifier = Modifier
             .width(Dimens.BoxSizeWidthDp)
             .height(Dimens.BoxHeight)
             .clip(RoundedCornerShape(Dimens.BoxCornerShape))
-            .background(if (isLocked) Color.LightGray else cardColor)
+            .background(
+                if (isLocked) MaterialTheme.colorScheme.secondaryContainer
+                else cardColor
+            )
             .border(
-                width = if (cardColor == Color.White && !isLocked) Dimens.Border else Dimens.BoxBorder0,
-                color = if (cardColor == Color.White && !isLocked) Color(0xFF5163BF) else Color.Transparent,
+
+                width = if (borderColor != Color.Transparent) Dimens.Border else Dimens.BoxBorder0,
+                color = borderColor,
                 shape = RoundedCornerShape(Dimens.BoxCornerShape)
             )
             .padding(Dimens.PaddingBox)
@@ -118,7 +131,7 @@ fun CardView(
                     Icon(
                         painter = painterResource(id = R.drawable.lock_close),
                         contentDescription = "Locked Card",
-                        tint = Color.Black,
+                        tint = MaterialTheme.colorScheme.onSecondary,
                         modifier = Modifier.size(Dimens.IconSizeDp)
                     )
                 }

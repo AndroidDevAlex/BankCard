@@ -7,12 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -29,11 +28,16 @@ fun PinCodeCircles(
                     .size(Dimens.BoxSizeCircle)
                     .clip(CircleShape)
                     .background(
-                        if (isFilled) colorResource(id = R.color.orange) else Color.Transparent,
+                        if (isFilled)
+                            MaterialTheme.colorScheme.primary
+                        else Color.Transparent,
                     )
                     .border(
                         Dimens.Border,
-                        if (isFilled) colorResource(id = R.color.orange) else Color.Gray,
+                        if (isFilled)
+                            MaterialTheme.colorScheme.primary
+                        else
+                            Color.Gray,
                         CircleShape
                     )
             )

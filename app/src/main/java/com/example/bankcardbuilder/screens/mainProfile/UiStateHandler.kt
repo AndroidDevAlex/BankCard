@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.exeption.AppException
 import com.example.bankcardbuilder.util.Dimens
 
@@ -35,9 +34,9 @@ fun UiStateHandler(
         isError != null -> onError(isError)
 
         isSuccess -> {
-                SuccessState(
-                    onSuccess = { onSuccess?.invoke() }
-                )
+            SuccessState(
+                onSuccess = { onSuccess?.invoke() }
+            )
         }
 
         isLoggedOut -> {
@@ -61,7 +60,7 @@ private fun LoadingState() {
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
-            color = colorResource(id = R.color.black),
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.size(Dimens.CircularProgress)
         )
     }

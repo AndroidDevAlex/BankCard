@@ -1,7 +1,9 @@
 package com.example.bankcardbuilder.screens.settingsCard.cardSettings
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import com.example.bankcardbuilder.ui.theme.Black
+import com.example.bankcardbuilder.ui.theme.DarkGray
+import com.example.bankcardbuilder.ui.theme.VeryDarkBlue
 import com.example.bankcardbuilder.util.Dimens
 import com.example.bankcardbuilder.util.Utils
 
@@ -35,6 +40,12 @@ fun BankCard(
     onExpiryDateClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val isDarkTheme = isSystemInDarkTheme()
+    val shouldHaveWhiteBorder =
+        isDarkTheme && (color == DarkGray || color == Black || color == VeryDarkBlue)
+
+
     Box(
         modifier = modifier
             .size(Dimens.BoxSize310, Dimens.BoxSize171)
@@ -44,6 +55,14 @@ fun BankCard(
             )
             .clip(RoundedCornerShape(Dimens.RoundedCornerShape22))
             .background(color)
+            .then(
+                if (shouldHaveWhiteBorder) Modifier.border(
+                    Dimens.Border,
+                    Color.White,
+                    RoundedCornerShape(Dimens.RoundedCornerShape22)
+                )
+                else Modifier
+            )
     ) {
         Column(
             modifier = Modifier.padding(

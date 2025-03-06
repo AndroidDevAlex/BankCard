@@ -6,16 +6,20 @@ import android.widget.Toast
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -32,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -58,8 +61,8 @@ fun LogInScreen(
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
 
-    LaunchedEffect(key1 = imeState.value){
-        if(imeState.value){
+    LaunchedEffect(key1 = imeState.value) {
+        if (imeState.value) {
             scrollState.animateScrollTo(scrollState.maxValue)
         }
     }
@@ -91,12 +94,15 @@ private fun LogInScreenUi(
     context: Context,
     scrollState: ScrollState
 ) {
+
+    val logo = if (isSystemInDarkTheme()) R.drawable.fox_image_black else R.drawable.fox_image_white
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
             .padding(Dimens.ColumnPadding)
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
+            .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
         Column(
             modifier = Modifier
@@ -104,7 +110,7 @@ private fun LogInScreenUi(
                 .padding(top = Dimens.PaddingColumnTop)
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.fox_image),
+                painter = painterResource(id = logo),
                 contentDescription = "Logo",
                 modifier = Modifier
                     .size(Dimens.IconSize60)
@@ -117,7 +123,7 @@ private fun LogInScreenUi(
             Text(
                 text = stringResource(R.string.log_in),
                 style = MaterialTheme.typography.headlineMedium.copy(fontSize = Dimens.FontSize48),
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -197,8 +203,8 @@ private fun LogInScreenUi(
                 .height(Dimens.ButtonHeight),
             shape = RoundedCornerShape(Dimens.CornerShape),
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorResource(id = R.color.orange),
-                contentColor = Color.White
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.tertiary
             )
         ) {
             Text(
@@ -230,13 +236,13 @@ private fun LogInScreenUi(
             Text(
                 text = stringResource(R.string.don_t_have_an_account),
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSp),
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.align(Alignment.CenterVertically)
             )
 
             Text(
                 text = stringResource(R.string.sign_up),
-                color = colorResource(id = R.color.signUp),
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSizeSp),
                 modifier = Modifier
                     .align(Alignment.CenterVertically)

@@ -14,10 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import com.example.bankcardbuilder.R
-import com.example.bankcardbuilder.ui.theme.Orange
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -26,7 +22,9 @@ fun PersonalInfo(label: String, value: String?) {
         modifier = Modifier
             .height(Dimens.BoxSize50)
             .clip(RoundedCornerShape(Dimens.IconCornerShape))
-            .background(colorResource(id = R.color.light_gray))
+            .background(
+                MaterialTheme.colorScheme.onPrimary
+            )
             .padding(horizontal = Dimens.BoxPaddingHorizontal)
     ) {
         Row(
@@ -37,13 +35,13 @@ fun PersonalInfo(label: String, value: String?) {
             Text(
                 text = "$label ",
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSp),
-                color = Orange
+                color = MaterialTheme.colorScheme.primary
             )
 
             Text(
                 text = value ?: "",
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = Dimens.TextFontSize13),
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onSecondary
             )
         }
     }

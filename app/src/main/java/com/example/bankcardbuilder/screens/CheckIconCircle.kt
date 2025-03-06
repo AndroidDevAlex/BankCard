@@ -7,12 +7,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import com.example.bankcardbuilder.R
 import com.example.bankcardbuilder.util.Dimens
 
 @Composable
@@ -20,13 +18,15 @@ fun CheckIconCircle() {
     Box(
         modifier = Modifier
             .size(Dimens.BoxSize21)
-            .background(color = colorResource(id = R.color.orange), shape = CircleShape),
+            .background(
+                color = MaterialTheme.colorScheme.primary
+                , shape = CircleShape),
         contentAlignment = Alignment.Center
     ) {
         Icon(
             imageVector = Icons.Default.Check,
             contentDescription = "Check Icon",
-            tint = Color.White,
+            tint = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.size(Dimens.IconSize14)
         )
     }
