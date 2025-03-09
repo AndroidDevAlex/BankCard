@@ -22,10 +22,7 @@ object Dimens {
     val ColumnEnd14 = 14.dp
     val ColumnStart = 5.dp
     val ColumnEnd = 5.dp
-    val ColumnPaddingStart = 6.dp
-    val PaddingStart3 = 3.dp
-    val PaddingEnd3 = 3.dp
-    val ColumnPaddingEnd = 6.dp
+    val PaddingBottom100 = 100.dp
     val PaddingStart = 30.dp
     val PaddingBottom = 50.dp
     val PaddingBottom110 = 110.dp
@@ -125,7 +122,7 @@ object Dimens {
     val MaxHeightSnack = 80.dp
 
     val HorizontalSpacedBy = 40.dp
-    val SpacedBy = 15.dp
+    val SpacedBy = 10.dp
     val SpacedBy16 = 16.dp
     val VerticalSpacedBy = 20.dp
     val HorizontalArrSpacedBy = 30.dp

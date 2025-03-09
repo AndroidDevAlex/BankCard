@@ -6,12 +6,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.bankcardbuilder.screens.auth.logIn.LogInScreen
-import com.example.bankcardbuilder.screens.settingsCard.loginPinCode.LoginPinCodeScreen
-import com.example.bankcardbuilder.screens.auth.splash.SplashScreen
-import com.example.bankcardbuilder.screens.mainProfile.MainProfileScreen
-import com.example.bankcardbuilder.screens.registration.RegistrationScreenFlow
-import com.example.bankcardbuilder.screens.settingsCard.cardSettings.CardSettingsScreensFlow
+import com.example.bankcardbuilder.presentation.screens.auth.logIn.LogInScreen
+import com.example.bankcardbuilder.presentation.screens.settingsCard.loginPinCode.LoginPinCodeScreen
+import com.example.bankcardbuilder.presentation.screens.auth.splash.SplashScreen
+import com.example.bankcardbuilder.presentation.screens.mainProfile.MainProfileScreen
+import com.example.bankcardbuilder.presentation.screens.registration.RegistrationScreenFlow
+import com.example.bankcardbuilder.presentation.screens.settingsCard.cardSettings.CardSettingsScreensFlow
 
 @Composable
 fun NavGraph(
