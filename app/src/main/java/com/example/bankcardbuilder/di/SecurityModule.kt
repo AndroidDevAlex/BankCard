@@ -1,7 +1,7 @@
 package com.example.bankcardbuilder.di
 
-import com.example.bankcardbuilder.security.SecurityUtils
-import com.example.bankcardbuilder.security.SecurityUtilsImpl
+import com.example.bankcardbuilder.features.domain.SecurityUtils
+import com.example.bankcardbuilder.features.data.security.SecurityUtilsImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ object SecurityModule {
 
     @Provides
     @Singleton
-     fun provideSecurityUtils() : SecurityUtils{
+     fun provideSecurityUtils() : SecurityUtils {
          return SecurityUtilsImpl()
      }
 }

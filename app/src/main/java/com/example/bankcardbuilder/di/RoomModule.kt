@@ -2,9 +2,9 @@ package com.example.bankcardbuilder.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.bankcardbuilder.data.local.AccountsDao
-import com.example.bankcardbuilder.data.local.AppDataBase
-import com.example.bankcardbuilder.data.local.CardsDao
+import com.example.bankcardbuilder.features.data.database.AccountsDao
+import com.example.bankcardbuilder.features.data.database.AppDataBase
+import com.example.bankcardbuilder.features.data.database.CardsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

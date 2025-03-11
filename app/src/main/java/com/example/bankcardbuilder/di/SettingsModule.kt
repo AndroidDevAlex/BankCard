@@ -1,7 +1,7 @@
 package com.example.bankcardbuilder.di
 
-import com.example.bankcardbuilder.settings.AccountSettings
-import com.example.bankcardbuilder.settings.SharedPreferencesAccountSettings
+import com.example.bankcardbuilder.features.domain.AccountSettings
+import com.example.bankcardbuilder.features.data.preferences.SharedPreferencesAccountSettings
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

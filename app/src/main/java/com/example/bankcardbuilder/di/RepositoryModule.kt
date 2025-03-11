@@ -1,11 +1,11 @@
 package com.example.bankcardbuilder.di
 
-import com.example.bankcardbuilder.domain.AccountsRepository
-import com.example.bankcardbuilder.data.repository.AccountsRepositoryImpl
-import com.example.bankcardbuilder.data.local.AccountsDao
-import com.example.bankcardbuilder.data.local.CardsDao
-import com.example.bankcardbuilder.security.SecurityUtils
-import com.example.bankcardbuilder.settings.AccountSettings
+import com.example.bankcardbuilder.features.domain.AccountsRepository
+import com.example.bankcardbuilder.features.data.repository.AccountsRepositoryImpl
+import com.example.bankcardbuilder.features.data.database.AccountsDao
+import com.example.bankcardbuilder.features.data.database.CardsDao
+import com.example.bankcardbuilder.features.domain.SecurityUtils
+import com.example.bankcardbuilder.features.domain.AccountSettings
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
