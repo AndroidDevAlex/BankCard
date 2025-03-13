@@ -54,5 +54,6 @@ An app for creating and managing bank cards. Register, fill in your personal det
   <img alt="Splash" src="screenshots/13.png" width="250">
 </p>
 
+
 ## Features
 - **Secure user registration using SecureRandom for salt generation. Multi-step hashing algorithm for enhanced password security**
