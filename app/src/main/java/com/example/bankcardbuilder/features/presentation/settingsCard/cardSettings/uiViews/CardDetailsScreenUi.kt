@@ -49,11 +49,11 @@ import com.example.bankcardbuilder.core.domain.Field
 import com.example.bankcardbuilder.core.domain.InvalidFieldFormatException
 import com.example.bankcardbuilder.core.presentstion.components.CustomErrorSnackbar
 import com.example.bankcardbuilder.core.presentstion.components.TopBarCustom
-import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.utils.BankCard
-import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.utils.CardSettingsDialog
+import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.components.BankCard
+import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.components.CardSettingsDialog
 import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.CardSettingsState
 import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.CardSettingsUIState
-import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.utils.InputType
+import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.components.InputType
 import com.example.bankcardbuilder.ui.theme.Black
 import com.example.bankcardbuilder.ui.theme.Blue
 import com.example.bankcardbuilder.ui.theme.BrightBlue

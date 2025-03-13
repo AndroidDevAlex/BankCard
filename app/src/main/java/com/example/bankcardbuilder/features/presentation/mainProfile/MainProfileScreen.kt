@@ -75,8 +75,9 @@ fun MainProfileScreen(
                 is MainProfileAction.GoToCardSettingsScreen -> goToCardSettingsScreen()
                 is MainProfileAction.GoToLoginPinCodeScreen -> goToLoginPinCodeScreen(action.pinCode)
                 is MainProfileAction.OnLogOut -> logOut()
-                else -> viewModel.onAction(action)
+                else -> Unit
             }
+            viewModel.onAction(action)
         },
         context = context
     )
@@ -231,12 +232,7 @@ fun MainProfileScreenUi(
                         CardView(
                             cardInfo = cardState,
                             isLocked = cardState.isLocked,
-                            onLockToggle = { cardNumber ->
-                                actions(MainProfileAction.OnToggleCardLock(cardNumber))
-                            },
-                            goToLoginPinCodeScreen = {
-                                actions(MainProfileAction.GoToLoginPinCodeScreen(cardState.cardNumber))
-                            }
+                            actions = actions
                         )
                     }
                     item {

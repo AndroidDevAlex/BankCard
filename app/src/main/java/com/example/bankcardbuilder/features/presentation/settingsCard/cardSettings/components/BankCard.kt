@@ -1,4 +1,4 @@
-package com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.utils
+package com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

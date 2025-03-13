@@ -37,13 +37,13 @@ import com.example.bankcardbuilder.ui.theme.VeryDarkBlue
 import com.example.bankcardbuilder.ui.theme.Violet
 import com.example.bankcardbuilder.ui.theme.White
 import com.example.bankcardbuilder.core.util.Dimens
+import com.example.bankcardbuilder.features.presentation.mainProfile.MainProfileAction
 
 @Composable
 fun CardView(
     cardInfo: ShortCardInfo,
     isLocked: Boolean,
-    onLockToggle: (String) -> Unit,
-    goToLoginPinCodeScreen: () -> Unit
+    actions: (MainProfileAction) -> Unit
 ) {
 
     val cardColor = parseColor(cardInfo.color)
@@ -108,7 +108,9 @@ fun CardView(
                         )
                     )
                     IconButton(
-                        onClick = { onLockToggle(cardInfo.cardNumber) },
+                        onClick = {
+                            actions(MainProfileAction.OnToggleCardLock(cardInfo.cardNumber))
+                        },
                         modifier = Modifier.padding(start = Dimens.PaddingStartBut)
                     ) {
                         Icon(
@@ -126,7 +128,7 @@ fun CardView(
             ) {
                 IconButton(
                     onClick = {
-                        goToLoginPinCodeScreen()
+                        actions(MainProfileAction.GoToLoginPinCodeScreen(cardInfo.cardNumber))
                     }
                 ) {
                     Icon(

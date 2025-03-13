@@ -1,4 +1,4 @@
-package com.example.bankcardbuilder.features.presentation.registration.util
+package com.example.bankcardbuilder.features.presentation.util
 
 fun String.capitalizeFirstLetter(): String {
     return this.lowercase()

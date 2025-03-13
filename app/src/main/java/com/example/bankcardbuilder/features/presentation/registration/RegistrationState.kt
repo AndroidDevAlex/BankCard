@@ -9,7 +9,7 @@ import com.example.bankcardbuilder.core.domain.InvalidFieldException
 import com.example.bankcardbuilder.core.domain.InvalidFieldFormatException
 import com.example.bankcardbuilder.core.domain.InvalidPasswordException
 import com.example.bankcardbuilder.core.domain.PasswordMismatchException
-import com.example.bankcardbuilder.features.presentation.registration.util.capitalizeFirstLetter
+import com.example.bankcardbuilder.features.presentation.util.capitalizeFirstLetter
 
 data class RegistrationState(
     val email: String = "",

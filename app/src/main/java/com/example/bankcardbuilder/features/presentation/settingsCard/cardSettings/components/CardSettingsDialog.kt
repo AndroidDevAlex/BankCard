@@ -1,4 +1,4 @@
-package com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.utils
+package com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import com.example.bankcardbuilder.R
-import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.utils.InputType.*
+import com.example.bankcardbuilder.features.presentation.settingsCard.cardSettings.components.InputType.*
 import com.example.bankcardbuilder.core.util.Dimens
 
 @Composable
