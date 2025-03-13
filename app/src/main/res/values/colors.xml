@@ -7,4 +7,17 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="orange">#B16241</color>
+    <color name="signUp">#D8521A</color>
+    <color name="yellow">#C18A2A</color>
+    <color name="yellow_Box">#F49331</color>
+
+    <color name="gray">#B8B7B6</color>
+    <color name="light_gray">#E8E6E4</color>
+    <color name="dark_gray">#807E7D</color>
+    <color name="blue">#2D2DE3</color>
+    <color name="beige">#EDEAE9</color>
+    <color name="red">#E32626</color>
+    <color name="grayLabel"> #878787</color>
+
 </resources>

@@ -10,38 +10,50 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Orange,
+    onSecondary = Color.Black,
+    tertiary = Color.White,
+    onTertiary = Color(0xFFBDBBBB),
+    onTertiaryContainer = Color(0xFF8D8C8C),
+    secondaryContainer = Beige,
+    background = Color.Black,
+    tertiaryContainer = YellowBox,
+    surface = Color(0xFFCCCACA),
+    onPrimary = Beige,
+    onBackground = Color.White,
+    onSurface = Color(0xFFD0D0D0),
+    surfaceVariant = Color(0xFFDDDCDC),
+    outline = Color(0xFFDDDCDC)
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
-
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    primary = Orange,
+    tertiaryContainer = YellowBox,
+    onTertiaryContainer = Color(0xFF838080),
+    secondaryContainer = LightGrayCard,
+    onTertiary = Gray,
+    background = Color(0xFFEBE9E9),
+    onSecondary = Color.Black,
+    surface = Color(0xFFB6B4B4),
+    onBackground = Color.Black,
+    onPrimary = GrayInfo,
+    tertiary = Color.White,
+    onSurface = Color(0xFF878787),
+    surfaceVariant = Color(0xFF878787),
+    outline = Color(0xFFC4C4C4)
 )
 
 @Composable
 fun BankCardBuilderTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -56,15 +68,23 @@ fun BankCardBuilderTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
+
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                window.isStatusBarContrastEnforced = false
+            } else {
+                WindowCompat.setDecorFitsSystemWindows(window, false)
+                WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+            }
+
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = AppTypography,
         content = content
     )
 }
