@@ -14,6 +14,7 @@ An app for creating and managing bank cards. Register, fill in your personal det
 - **Image loading**: [Coil](https://coil-kt.github.io/coil/compose/)
 
 
+
 ## Screenshots
 
 ### Authentication
@@ -49,10 +50,11 @@ An app for creating and managing bank cards. Register, fill in your personal det
 ### Dark theme
 
 <p float="left">
-  <img alt="Splash" src="screenshots/11.png" width="250">
-  <img alt="Splash" src="screenshots/12.png" width="250">
   <img alt="Splash" src="screenshots/13.png" width="250">
+  <img alt="Splash" src="screenshots/12.png" width="250">
+  <img alt="Splash" src="screenshots/11.png" width="250">
 </p>
+
 
 
 ## Features
