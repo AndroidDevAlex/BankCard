@@ -74,11 +74,11 @@ fun MainProfileScreen(
             when (action) {
                 is MainProfileAction.GoToCardSettingsScreen -> goToCardSettingsScreen()
                 is MainProfileAction.GoToLoginPinCodeScreen -> goToLoginPinCodeScreen(action.pinCode)
-                is MainProfileAction.OnLogOut -> logOut()
                 else -> Unit
             }
             viewModel.onAction(action)
         },
+        logOut = logOut,
         context = context
     )
 }
@@ -87,6 +87,7 @@ fun MainProfileScreen(
 fun MainProfileScreenUi(
     screenState: MainProfileScreenState,
     actions: (MainProfileAction) -> Unit,
+    logOut: () -> Unit,
     context: Context
 ) {
 
@@ -114,7 +115,7 @@ fun MainProfileScreenUi(
         ) {
             TopBarCustom(
                 onMenuClicked = {},
-                onExitClicked = { actions(MainProfileAction.OnClickLogOut) },
+                onExitClicked = { actions(MainProfileAction.OnClickLogOut(block = logOut)) },
                 start = Dimens.ColumnStart,
                 end = Dimens.ColumnEnd
             )
@@ -253,8 +254,6 @@ fun MainProfileScreenUi(
                 isLoading = screenState.stateUI is MainProfileUiState.Loading,
                 isError = (screenState.stateUI as? MainProfileUiState.Error)?.exception,
                 isEmpty = screenState.stateUI is MainProfileUiState.Empty,
-                isLoggedOut = screenState.stateUI is MainProfileUiState.LoggedOut,
-                onLoggedOut = { actions(MainProfileAction.OnLogOut) },
                 onError = { exception ->
                     val errorMessage = when (exception) {
                         is SameDataException -> stringResource(R.string.this_image_has_already_been_selected)

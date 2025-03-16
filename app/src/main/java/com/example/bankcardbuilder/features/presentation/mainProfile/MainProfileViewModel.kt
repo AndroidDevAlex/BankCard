@@ -11,13 +11,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 
 @HiltViewModel
 class MainProfileViewModel @Inject constructor(
     private val accountsRepository: AccountsRepository,
-    @Named("IODispatcher") private val ioDispatcher: CoroutineDispatcher
+    @Named("IODispatcher") private val ioDispatcher: CoroutineDispatcher,
+    @Named("MainDispatcher") private val mainDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _screenState =
@@ -103,12 +105,13 @@ class MainProfileViewModel @Inject constructor(
         }
     }
 
-    private fun logOut() {
+    private fun logOut(block: () -> Unit) {
         viewModelScope.launch(ioDispatcher) {
             try {
                 accountsRepository.logOut()
-                _screenState.value =
-                    MainProfileScreenState(stateUI = MainProfileUiState.LoggedOut)
+                withContext(mainDispatcher) {
+                    block.invoke()
+                }
             } catch (e: AppException) {
                 _screenState.value = MainProfileScreenState(stateUI = MainProfileUiState.Error(e))
             }
@@ -117,7 +120,7 @@ class MainProfileViewModel @Inject constructor(
 
     fun onAction(action: MainProfileAction) {
         when (action) {
-            is MainProfileAction.OnClickLogOut -> logOut()
+            is MainProfileAction.OnClickLogOut -> logOut(block = action.block)
             is MainProfileAction.OnUpdatePhoto -> updatePhoto(action.photoUri)
             is MainProfileAction.OnToggleCardLock -> toggleCardLock(action.cardNumber)
             is MainProfileAction.ClearError -> clearError()
