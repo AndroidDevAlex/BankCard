@@ -13,17 +13,14 @@ import androidx.compose.ui.Modifier
 import com.example.bankcardbuilder.core.domain.AppException
 import com.example.bankcardbuilder.core.util.Dimens
 
-
 @Composable
 fun UiStateHandler(
     isLoading: Boolean,
     isSuccess: Boolean = false,
     isError: AppException?,
     isEmpty: Boolean,
-    isLoggedOut: Boolean = false,
     onError: @Composable (AppException) -> Unit,
     onSuccess: (() -> Unit)? = null,
-    onLoggedOut: (() -> Unit)? = null,
     onEmpty: @Composable () -> Unit,
 ) {
     when {
@@ -37,12 +34,6 @@ fun UiStateHandler(
             SuccessState(
                 onSuccess = { onSuccess?.invoke() }
             )
-        }
-
-        isLoggedOut -> {
-            LaunchedEffect(Unit) {
-                onLoggedOut?.invoke()
-            }
         }
 
         isEmpty -> {

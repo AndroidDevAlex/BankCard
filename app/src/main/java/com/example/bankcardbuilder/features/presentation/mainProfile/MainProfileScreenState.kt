@@ -11,7 +11,6 @@ data class MainProfileScreenState(
 sealed class MainProfileUiState {
     data object Loading : MainProfileUiState()
     data object Empty : MainProfileUiState()
-    data object LoggedOut : MainProfileUiState()
     data class Success(val userProfile: UserProfileInformation): MainProfileUiState()
     data class Error(val exception: AppException) : MainProfileUiState()
 }
