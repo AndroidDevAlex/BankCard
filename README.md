@@ -5,7 +5,7 @@ An app for creating and managing bank cards. Register, fill in your personal det
 ## Technology Stack
 
 - **Programming Language**: [Kotlin](https://kotlinlang.org/)
-- **Architecture Pattern**: MVVM (Model-View-ViewModel)
+- **Architecture Pattern**: MVI (Model-View-Intent) 
 - **Dependency Injection**: [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
 - **Asynchronous Programming**: [Kotlin Flow](https://kotlinlang.org/docs/flow.html), [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
 - **Database**: [SQLite](https://www.sqlite.org/index.html) (with [Room](https://developer.android.com/training/data-storage/room))
